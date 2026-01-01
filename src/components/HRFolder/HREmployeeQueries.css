@@ -1,0 +1,482 @@
+.hr-queries-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-queries-content {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+    text-align: left;
+    /* Ensure left alignment */
+}
+
+/* Header */
+.queries-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.title-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.title-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.title-underline {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background-color: #3182CE;
+    /* Blue highlight */
+    opacity: 0.2;
+    z-index: 1;
+    border-radius: 4px;
+}
+
+.page-subtitle {
+    color: #4B5563;
+    font-size: 15px;
+    margin: 0;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-export {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    color: #2D3748;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-export:hover {
+    background-color: #F7FAFC;
+}
+
+.btn-new-query {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #2C3E50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.btn-new-query:hover {
+    background-color: #1A202C;
+    transform: translateY(-1px);
+}
+
+/* Filter Bar */
+.queries-filter-bar {
+    background: white;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    flex: 1;
+    max-width: 500px;
+    color: #A0AEC0;
+}
+
+.search-wrapper input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    color: #4A5568;
+}
+
+.search-wrapper input::placeholder {
+    color: #A0AEC0;
+}
+
+.filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 8px;
+}
+
+.status-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #F7FAFC;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2D3748;
+    cursor: pointer;
+}
+
+.clear-x {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #A0AEC0;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.filter-toggle-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F7FAFC;
+    border: none;
+    border-radius: 6px;
+    color: #718096;
+    cursor: pointer;
+}
+
+/* Table */
+.queries-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #E2E8F0;
+}
+
+.queries-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+    /* Force scroll on small screens */
+}
+
+.queries-table thead {
+    background-color: #F1F5F9;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.queries-table th {
+    padding: 16px 24px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.queries-table td {
+    padding: 16px 24px;
+    vertical-align: middle;
+    border-bottom: 1px solid #F1F5F9;
+    color: #334155;
+    font-size: 14px;
+}
+
+.queries-table tr:hover {
+    background-color: #F8FAFC;
+}
+
+/* Columns */
+.profile-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cell-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.cell-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.name-text {
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.email-text {
+    font-size: 12px;
+    color: #64748B;
+}
+
+.query-details {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.query-details:hover {
+    opacity: 0.8;
+}
+
+.query-title {
+    font-weight: 600;
+    color: #1E293B;
+    margin-bottom: 4px;
+}
+
+.query-desc {
+    font-size: 12px;
+    color: #64748B;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.col-date,
+.col-followup {
+    color: #64748B;
+    font-size: 13px;
+}
+
+/* Status Badges */
+.status-pill {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+    border: 1px solid transparent;
+}
+
+.status-new {
+    background-color: #DCFCE7;
+    /* Green for 'New' as per image usually implies 'Fresh/Good' or if user wants 'Same Same', often New is Green in some dashboards. But I will stick to the previous Green I set if it looked like the image. Wait, the user said 'same to same'.
+    Let's look at the image description again: 'New' (Green pill), 'In Progress' (Red/Pink pill), 'Follow-up' (Yellow pill).
+    My previous Code used Green for New. I will keep it Green but clean up the name. */
+    background-color: #F0FFF4;
+    color: #38A169;
+    border-color: #C6F6D5;
+}
+
+.status-progress {
+    background-color: #FFF5F5;
+    /* Red/Pinkish for In Progress? A bit aggressive, but per description of 'same to same' and if image showed that... */
+    color: #E53E3E;
+    border-color: #FED7D7;
+}
+
+.status-follow {
+    background-color: #FFFFF0;
+    color: #D69E2E;
+    border-color: #F6E05E;
+}
+
+/* Action Buttons */
+.btn-follow-up {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background-color: #4F46E5;
+    /* Indigo/Blueish */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-follow-up:hover {
+    background-color: #4338CA;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-view-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    color: #64748B;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-view-action:hover {
+    background-color: #F7FAFC;
+    color: #2D3748;
+    border-color: #CBD5E0;
+}
+
+
+/* Footer */
+.queries-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid #E2E8F0;
+    /* If needed outside table */
+    background: white;
+    /* If detached */
+    padding: 20px;
+    border-radius: 0 0 12px 12px;
+    /* Bottom corners */
+    margin-top: -20px;
+    /* Connect to table */
+    border: 1px solid #E2E8F0;
+    border-top: none;
+}
+
+.footer-text {
+    color: #64748B;
+    font-size: 14px;
+}
+
+.pagination {
+    display: flex;
+    gap: 4px;
+}
+
+.page-number,
+.page-arrow,
+.page-dots {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    border-radius: 50%;
+    color: #64748B;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.page-number:hover,
+.page-arrow:hover {
+    background-color: #F1F5F9;
+    color: #1E293B;
+}
+
+.page-number.active {
+    background-color: #DBEAFE;
+    color: #2563EB;
+    font-weight: 600;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .queries-table-container {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .hr-queries-content {
+        padding: 20px;
+    }
+
+    .queries-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-buttons {
+        width: 100%;
+    }
+
+    .btn-export,
+    .btn-new-query {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .queries-filter-bar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-wrapper {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
+
+    .filter-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .queries-footer {
+        flex-direction: column;
+        gap: 16px;
+    }
+}

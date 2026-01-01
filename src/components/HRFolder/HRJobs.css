@@ -1,0 +1,472 @@
+.hr-jobs-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    /* Very light gray/white background from image */
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-jobs-content {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+/* Header Section */
+.jobs-header-section {
+    margin-bottom: 24px;
+}
+
+.breadcrumb {
+    font-size: 14px;
+    color: #4A5568;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.crumb-link {
+    color: #4A5568;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.crumb-current {
+    color: #1A202C;
+    font-weight: 600;
+}
+
+.crumb-sep {
+    color: #A0AEC0;
+    font-size: 12px;
+}
+
+.jobs-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.jobs-page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+    margin-top: 0;
+}
+
+.jobs-page-subtitle {
+    color: #4B5563;
+    font-size: 15px;
+    margin: 0;
+}
+
+.create-job-btn {
+    background-color: #2D3748;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+/* Create Button - Active State added */
+.create-job-btn:hover {
+    background-color: #1A202C;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.create-job-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* Filters - Active State added */
+.jobs-filters-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.job-search-box {
+    flex: 1;
+    max-width: 600px;
+    background-color: #E2E8F0;
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #718096;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.job-search-box:focus-within {
+    border-color: #3182CE;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.job-search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    color: #2D3748;
+    text-align: left;
+}
+
+.job-search-box input::placeholder {
+    color: #A0AEC0;
+    text-align: left;
+}
+
+.filter-dropdowns {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-btn {
+    padding: 10px 16px;
+    border: 1px solid #CBD5E0;
+    background-color: #E2E8F0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-size: 14px;
+    color: #2D3748;
+    cursor: pointer;
+    justify-content: space-between;
+    min-width: 120px;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background-color: #EDF2F7;
+    border-color: #A0AEC0;
+}
+
+.filter-btn:active {
+    background-color: #E2E8F0;
+    transform: translateY(1px);
+}
+
+/* ... (skipping unchanged table styles) ... */
+
+/* Footer Pagination - Active State added */
+.page-btn {
+    background: white;
+    border: 1px solid #CBD5E0;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #4A5568;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-btn:hover {
+    background-color: #F7FAFC;
+    border-color: #A0AEC0;
+}
+
+.page-btn:active {
+    background-color: #EDF2F7;
+    transform: translateY(1px);
+}
+
+/* Table */
+.jobs-table-container {
+    background-color: white;
+    /* Or maybe transparent? Image looks like white card or just on bg. 
+                              Actually looks like the table rows are zebra or just separated. 
+                              Header is gray. */
+    border-radius: 8px;
+    border: 1px solid #E2E8F0;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.jobs-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+    /* Scroll on mobile */
+}
+
+.jobs-table thead {
+    background-color: #EDF2F7;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.jobs-table th {
+    padding: 16px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4A5568;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+}
+
+.jobs-table td {
+    padding: 16px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #F7FAFC;
+    color: #2D3748;
+    font-size: 14px;
+    text-align: left;
+}
+
+.jobs-table tr:hover {
+    background-color: #F8FAFC;
+}
+
+/* Column specifics */
+.col-title {
+    font-weight: 500;
+    color: #2C5282;
+    /* Blue tint for title usually? Or just dark text. Image shows blue-ish for title? Actually maybe standard text. */
+}
+
+.job-title-text {
+    font-size: 15px;
+    color: #4A5568;
+    /* Actually looks like slate/blue gray */
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.col-dept {
+    color: #4A5568;
+}
+
+/* Badges */
+.badge-eng {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.eng-client {
+    background-color: #EBF8FF;
+    color: #4299E1;
+    border: 1px solid #BEE3F8;
+}
+
+.eng-payroll {
+    background-color: #FAF5FF;
+    color: #9F7AEA;
+    border: 1px solid #E9D8FD;
+}
+
+.job-type-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4A5568;
+}
+
+/* Applicants */
+.applicants-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.applicant-avatars {
+    position: relative;
+    width: 50px;
+    /* space for overlapping */
+    height: 30px;
+}
+
+.applicant-avatars img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid white;
+    position: absolute;
+    left: 0;
+}
+
+.more-applicants {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #2D3748;
+    color: white;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    position: absolute;
+    left: 20px;
+}
+
+.applicant-count {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.no-applicants {
+    font-size: 12px;
+    color: #A0AEC0;
+    font-style: italic;
+    line-height: 1.2;
+}
+
+.col-date {
+    color: #4A5568;
+}
+
+/* Status Badge */
+.status-badge {
+    padding: 4px 16px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid;
+    display: inline-block;
+    text-align: center;
+    min-width: 60px;
+}
+
+.status-active {
+    background-color: #F0FFF4;
+    color: #48BB78;
+    border-color: #C6F6D5;
+}
+
+.status-closed {
+    background-color: #FFF5F5;
+    color: #F56565;
+    border-color: #FED7D7;
+}
+
+.status-draft {
+    background-color: #EDF2F7;
+    color: #4A5568;
+    border-color: #CBD5E0;
+}
+
+.action-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #4A5568;
+    padding: 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-icon-btn:hover {
+    color: #1A202C;
+    background-color: #EDF2F7;
+}
+
+.action-icon-btn:active {
+    background-color: #E2E8F0;
+    transform: translateY(1px);
+}
+
+/* Footer Pagination */
+.jobs-table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+    margin-bottom: 40px;
+}
+
+.showing-text {
+    color: #718096;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.pagination-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.page-btn {
+    background: white;
+    border: 1px solid #CBD5E0;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #4A5568;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-btn:hover {
+    background-color: #F7FAFC;
+    border-color: #A0AEC0;
+}
+
+.page-btn:active {
+    background-color: #EDF2F7;
+    transform: translateY(1px);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .jobs-table-container {
+        overflow-x: auto;
+        /* enable scroll */
+    }
+}
+
+@media (max-width: 640px) {
+    .jobs-header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .jobs-title-row {
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .create-job-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .jobs-filters-row {
+        flex-direction: column;
+    }
+
+    .filter-dropdowns {
+        width: 100%;
+    }
+
+    .filter-btn {
+        flex: 1;
+    }
+}

@@ -1,0 +1,695 @@
+.hr-candidate-status-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-status-content {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: #2D3748;
+    text-decoration: underline;
+}
+
+/* Header Section */
+.candidate-header-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #EDF2F7;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.header-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.header-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #E2E8F0;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+}
+
+.name-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1A202C;
+    margin: 0;
+    text-align: left;
+}
+
+.status-badge-header {
+    background-color: #EBF4FF;
+    color: #3182CE;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 12px;
+}
+
+.header-role {
+    font-size: 14px;
+    color: #4A5568;
+    margin: 0;
+    text-align: left;
+}
+
+.header-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 4px;
+}
+
+.meta-item {
+    font-size: 13px;
+    color: #718096;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #CBD5E0;
+    border-radius: 6px;
+    color: #4A5568;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.header-action-btn:hover {
+    background: #F7FAFC;
+    border-color: #A0AEC0;
+    color: #2D3748;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.header-action-btn:active {
+    background: #EDF2F7;
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+.header-menu-btn {
+    background: none;
+    border: none;
+    color: #A0AEC0;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.header-menu-btn:hover {
+    background-color: #F7FAFC;
+    color: #4A5568;
+}
+
+.header-menu-btn:active {
+    background-color: #EDF2F7;
+}
+
+/* Workflow & Automation Row */
+.workflow-automation-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+/* Workflow Card */
+.workflow-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #EDF2F7;
+    flex: 1;
+    /* 30-40% typically */
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.card-top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.card-title-icon {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3748;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+}
+
+.icon-grid {
+    color: #718096;
+    font-size: 18px;
+}
+
+.card-description {
+    font-size: 13px;
+    color: #718096;
+    margin: 0 0 20px 0;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.status-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4A5568;
+    margin-bottom: 8px;
+    display: block;
+    text-align: left;
+}
+
+.status-select-wrapper {
+    position: relative;
+    border: 1px solid #CBD5E0;
+    border-radius: 6px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    background: white;
+}
+
+.status-dot-indicator {
+    width: 6px;
+    height: 6px;
+    background-color: #38A169;
+    border-radius: 50%;
+    margin-left: 12px;
+    position: absolute;
+    pointer-events: none;
+}
+
+.status-select {
+    width: 100%;
+    padding: 10px 10px 10px 24px;
+    /* Space for dot */
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #2D3748;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    text-align: left;
+}
+
+.status-select-wrapper svg {
+    position: absolute;
+    right: 12px;
+    color: #718096;
+    pointer-events: none;
+}
+
+.last-updated {
+    font-size: 12px;
+    color: #718096;
+    margin-top: auto;
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Automation Card */
+.automation-card {
+    background: #F0F4FF;
+    /* Light blueish tint */
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #E2E8F0;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.automation-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0 0 8px 0;
+    text-align: left;
+}
+
+.automation-subtitle {
+    font-size: 13px;
+    color: #4A5568;
+    margin: 0 0 20px 0;
+    text-align: left;
+}
+
+.email-preview-box {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #E2E8F0;
+    text-align: left;
+}
+
+.email-field {
+    border-bottom: 1px solid #EDF2F7;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.field-label {
+    color: #718096;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.field-value {
+    color: #2D3748;
+}
+
+.email-body {
+    font-size: 13px;
+    color: #4A5568;
+    line-height: 1.5;
+    margin-top: 12px;
+    text-align: left;
+}
+
+.email-body p {
+    margin: 0 0 8px 0;
+    text-align: left;
+}
+
+.automation-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-send-email {
+    background: #2D3748;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-send-email:hover {
+    background: #1A202C;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-send-email:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn-edit-preview {
+    background: white;
+    border: 1px solid #CBD5E0;
+    color: #4A5568;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-edit-preview:hover {
+    background-color: #F7FAFC;
+    border-color: #A0AEC0;
+    color: #2D3748;
+}
+
+.btn-edit-preview:active {
+    background-color: #EDF2F7;
+    border-color: #A0AEC0;
+}
+
+.btn-skip {
+    background: transparent;
+    border: none;
+    color: #718096;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-skip:hover {
+    color: #4A5568;
+    text-decoration: underline;
+}
+
+.btn-skip:active {
+    color: #2D3748;
+}
+
+
+
+/* Main Grid Layout */
+.candidate-grid-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+/* Sidebar Column */
+.grid-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #EDF2F7;
+    text-align: left;
+}
+
+.card-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #718096;
+    margin: 0 0 20px 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.icon-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #EBF8FF;
+    color: #3182CE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.c-label {
+    font-size: 11px;
+    color: #718096;
+}
+
+.c-value {
+    font-size: 13px;
+    color: #1A202C;
+    font-weight: 500;
+}
+
+/* Resume Box */
+.resume-preview {
+    background: #F7FAFC;
+    border: 1px solid #EDF2F7;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.pdf-icon-placeholder svg {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+}
+
+.resume-name {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2D3748;
+    margin-bottom: 4px;
+    word-break: break-word;
+    text-align: left;
+}
+
+.resume-size {
+    display: block;
+    font-size: 11px;
+    color: #718096;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.btn-download-resume {
+    background: #2D3748;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-download-resume:hover {
+    background-color: #1A202C;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-download-resume:active {
+    transform: translateY(0);
+    box-shadow: none;
+    background-color: #000;
+}
+
+/* Skills */
+.skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    background: #EDF2F7;
+    color: #4A5568;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Main Grid Column */
+.grid-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.card-tile-large {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0 0 20px 0;
+}
+
+.cover-letter-content {
+    font-size: 14px;
+    color: #4A5568;
+    line-height: 1.6;
+}
+
+.cover-letter-content p {
+    margin-bottom: 16px;
+}
+
+/* Q&A */
+.qa-block {
+    margin-bottom: 24px;
+}
+
+.qa-question {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2D3748;
+    margin: 0 0 12px 0;
+}
+
+.qa-answer {
+    background: #F8F9FA;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #4A5568;
+    line-height: 1.5;
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .workflow-automation-row {
+        flex-direction: column;
+    }
+
+    .workflow-card {
+        max-width: 100%;
+    }
+
+    .candidate-grid-layout {
+        flex-direction: column;
+    }
+
+    .grid-sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .info-card {
+        flex: 1;
+        min-width: 300px;
+    }
+}
+
+@media (max-width: 640px) {
+    .candidate-header-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .header-info {
+        gap: 8px;
+    }
+
+    .name-row {
+        flex-wrap: wrap;
+    }
+
+    .header-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .grid-sidebar {
+        flex-direction: column;
+    }
+
+    .info-card {
+        min-width: 100%;
+    }
+
+    .automation-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-skip {
+        margin-top: 8px;
+    }
+}

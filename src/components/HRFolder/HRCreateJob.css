@@ -1,0 +1,506 @@
+.hr-create-job-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-create-job-content {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0;
+    /* Align left, not centered */
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+/* Page Header */
+.create-job-header {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.create-job-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+    margin-top: 0;
+}
+
+.create-job-subtitle {
+    color: #4B5563;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Search Bar (Top) */
+.create-job-search {
+    background-color: #E2E8F0;
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #718096;
+    margin-bottom: 30px;
+    max-width: 400px;
+    /* Limit width as per design? visual shows it wider actually approx 1/3 but let's see. actually image uses a wide gray bar. */
+    max-width: 100%;
+    /* Image shows it possibly full width of content or at least wide */
+    width: 350px;
+    /* Adjust based on look, consistent with other pages */
+}
+
+.create-job-search input {
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
+    color: #2D3748;
+    font-size: 14px;
+    text-align: left;
+}
+
+.create-job-search input::placeholder {
+    text-align: left;
+}
+
+/* Main Grid Layout */
+.create-job-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    /* Left side wider */
+    gap: 24px;
+    align-items: start;
+}
+
+/* Left Column & Right Column containers */
+.left-column,
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Cards */
+.form-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #EDF2F7;
+    /* Subtle border */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0;
+}
+
+.card-icon-box {
+    color: #4A5568;
+    display: flex;
+    align-items: center;
+}
+
+/* Form Groups & Inputs */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2D3748;
+    text-align: left;
+    width: 100%;
+    /* Ensure it takes width if block */
+}
+
+.required-star {
+    color: #E53E3E;
+}
+
+.text-input,
+.select-input {
+    padding: 10px 12px;
+    border: 1px solid #CBD5E0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2D3748;
+    outline: none;
+    transition: border-color 0.2s;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.text-input::placeholder,
+.select-input::placeholder {
+    text-align: left;
+}
+
+.text-input:focus,
+.select-input:focus {
+    border-color: #3182CE;
+}
+
+/* Job Description Editor Placeholder */
+.editor-container {
+    border: 1px solid #CBD5E0;
+    border-radius: 6px;
+    overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* Ensure full width */
+    box-sizing: border-box;
+}
+
+.editor-toolbar {
+    background-color: #F7FAFC;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 8px 12px;
+    display: flex;
+    gap: 12px;
+}
+
+.toolbar-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4A5568;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.toolbar-btn:hover {
+    background-color: #EDF2F7;
+}
+
+.editor-textarea {
+    flex: 1;
+    border: none;
+    resize: none;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #2D3748;
+    outline: none;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.editor-textarea::placeholder {
+    text-align: left;
+}
+
+/* Skills Chips */
+.skills-input-container {
+    border: 1px solid #CBD5E0;
+    border-radius: 6px;
+    padding: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 42px;
+    width: 100%;
+    /* Ensure full width */
+    box-sizing: border-box;
+}
+
+.skill-chip {
+    background-color: #EBF8FF;
+    /* Light blue */
+    color: #2B6CB0;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.remove-skill {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.skills-input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    min-width: 120px;
+    padding: 4px;
+    text-align: left;
+}
+
+.skills-input::placeholder {
+    text-align: left;
+}
+
+/* Work Arrangement */
+.arrangement-options {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    /* Ensure full width */
+    box-sizing: border-box;
+}
+
+.arrangement-card {
+    flex: 1;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.arrangement-card.active {
+    border-color: #3182CE;
+    background-color: #EBF8FF;
+    color: #2C5282;
+}
+
+.arr-icon {
+    font-size: 20px;
+    color: #718096;
+}
+
+.arrangement-card.active .arr-icon {
+    color: #3182CE;
+}
+
+.arr-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #4A5568;
+}
+
+.arrangement-card.active .arr-label {
+    color: #2C5282;
+}
+
+/* Location Input with Icon */
+.location-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* Ensure full width */
+    box-sizing: border-box;
+}
+
+.location-icon-inside {
+    position: absolute;
+    left: 12px;
+    color: #718096;
+}
+
+.location-input {
+    padding-left: 36px;
+}
+
+/* Compensation Toggle */
+.negotiable-toggle {
+    width: 100%;
+    padding: 12px;
+    background-color: #F7FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4A5568;
+    cursor: pointer;
+}
+
+/* Date Input */
+.date-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.date-input-wrapper input {
+    width: 100%;
+    padding-right: 36px;
+    /* Space for icon if custom*/
+}
+
+.calendar-icon-right {
+    position: absolute;
+    right: 12px;
+    pointer-events: none;
+    color: #A0AEC0;
+}
+
+/* Footer Actions */
+.create-job-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.footer-btn {
+    padding: 8px 16px;
+    /* Minimized padding */
+    min-width: 100px;
+    /* Minimized width */
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    /* Compact height */
+    box-sizing: border-box;
+}
+
+/* Back Button (Restored) */
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4B5563;
+    margin-bottom: 20px;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: #111827;
+}
+
+/* Cancel Button */
+.btn-cancel {
+    background-color: white;
+    border: 1px solid #D1D5DB;
+    color: #374151;
+}
+
+.btn-cancel:hover {
+    background-color: #F3F4F6;
+    border-color: #9CA3AF;
+    color: #111827;
+}
+
+.btn-cancel:active {
+    background-color: #E5E7EB;
+    transform: translateY(1px);
+}
+
+/* Publish Button (Primary) */
+.btn-publish {
+    background-color: #2D3748;
+    color: white;
+    border: 1px solid #2D3748;
+}
+
+.btn-publish:hover {
+    background-color: #1A202C;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-publish:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* Responsive */
+.logout-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 40px;
+}
+
+@media (max-width: 1024px) {
+    .create-job-grid {
+        grid-template-columns: 1fr;
+        /* Stack columns */
+    }
+
+    .right-column {
+        flex-direction: column-reverse;
+        /* Maybe keep Publishing at bottom? Layout usually stacks naturally. */
+        /* Actually image shows Right column has Location, Compensation, Publishing.
+           If we stack, they will maintain order. */
+    }
+}
+
+@media (max-width: 640px) {
+    .hr-create-job-content {
+        padding: 20px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+
+
+    .create-job-footer {
+        flex-direction: column-reverse;
+        /* Stack buttons on mobile */
+    }
+
+    .footer-btn {
+        width: 100%;
+        text-align: left;
+        /* user wants all text left */
+        display: flex;
+        justify-content: center;
+        /* keep content centered in button or left? "items left" usually implies layout. text inside button usually centered. I will try left. */
+        justify-content: flex-start;
+        padding-left: 16px;
+    }
+}

@@ -1,0 +1,462 @@
+.hr-candidate-profile-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-profile-content {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: #2D3748;
+    text-decoration: underline;
+}
+
+.profile-layout {
+    display: flex;
+    gap: 30px;
+}
+
+/* Left Sidebar */
+.profile-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px 24px;
+    border: 1px solid #EDF2F7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centers direct children horizontally */
+    text-align: center;
+}
+
+.avatar-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Double ensure centering inside this container */
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.large-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    /* Slight shadow */
+}
+
+.online-status {
+    width: 20px;
+    height: 20px;
+    background-color: #48BB78;
+    border: 3px solid white;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.profile-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0 0 8px 0;
+}
+
+.profile-role {
+    font-size: 14px;
+    color: #4A5568;
+    margin: 0 0 16px 0;
+}
+
+.status-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #EBF8FF;
+    color: #3182CE;
+    /* Blueish */
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #3182CE;
+    border-radius: 50%;
+}
+
+/* Contact Info */
+.contact-info-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: left;
+    margin-bottom: 30px;
+    border-top: 1px solid #EDF2F7;
+    padding-top: 24px;
+    /* Separator like image? Actually looks like just space or subtle line. I'll add subtle line. */
+    border-bottom: 1px solid #EDF2F7;
+    padding-bottom: 24px;
+}
+
+.contact-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.contact-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #EBF8FF;
+    color: #3182CE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+
+.contact-label {
+    color: #718096;
+    margin-bottom: 2px;
+}
+
+.contact-value {
+    color: #2D3748;
+    font-weight: 600;
+}
+
+/* Profile Actions */
+.profile-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #2C3E50;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1A202C;
+}
+
+.btn-outline {
+    background-color: white;
+    color: #2D3748;
+    border: 1px solid #CBD5E0;
+}
+
+.btn-outline:hover {
+    background-color: #F7FAFC;
+    border-color: #A0AEC0;
+}
+
+.btn-reject:hover {
+    background-color: #FFF5F5;
+    color: #C53030;
+    border-color: #FC8181;
+}
+
+.btn-reject:active {
+    background-color: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+}
+
+.btn-black {
+    background-color: #000000;
+    color: white;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-black:hover {
+    background-color: #1A1A1A;
+}
+
+.btn-link-download {
+    background: none;
+    border: none;
+    color: #3182CE;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-link-download:hover {
+    text-decoration: underline;
+}
+
+/* Right Content */
+.profile-main-content {
+    flex: 1;
+    text-align: left;
+    /* Ensure all content here starts left */
+}
+
+/* Tabs */
+.profile-tabs {
+    display: flex;
+    border-bottom: 1px solid #EDF2F7;
+    margin-bottom: 24px;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #718096;
+    cursor: pointer;
+    position: relative;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    color: #2D3748;
+    background-color: #F7FAFC;
+}
+
+.tab-btn:active {
+    background-color: #EDF2F7;
+}
+
+.tab-btn.active {
+    color: #3182CE;
+    border-bottom-color: #3182CE;
+}
+
+/* Tab Content */
+.content-section {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 24px;
+    border: 1px solid #EDF2F7;
+    text-align: left;
+    /* Strict left alignment */
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0;
+    text-align: left;
+}
+
+.submitted-badge {
+    background-color: #E2E8F0;
+    color: #4A5568;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.cover-letter-text {
+    font-size: 15px;
+    color: #4A5568;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+/* QA Section */
+.qa-pair {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.question-text {
+    font-weight: 500;
+    color: #2D3748;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.answer-box {
+    background-color: #F7FAFC;
+    padding: 16px;
+    border-radius: 6px;
+    color: #2D3748;
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid #EDF2F7;
+    text-align: left;
+}
+
+/* Logout Section */
+.logout-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 20px;
+}
+
+.logout-dots {
+    color: #A0AEC0;
+    font-size: 20px;
+    line-height: 10px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    margin-right: 10px;
+    transition: color 0.2s;
+}
+
+.logout-dots:hover {
+    color: #4A5568;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #F56565;
+    background: none;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    opacity: 0.8;
+    background-color: #FFF5F5;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-right: -8px;
+}
+
+.logout-btn:active {
+    transform: translateY(1px);
+}
+
+/* Button dots */
+.btn-dots {
+    color: #A0AEC0;
+    margin-right: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+    }
+
+    .contact-info-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .contact-item {
+        flex: 1;
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 640px) {
+    .hr-profile-content {
+        padding: 20px;
+    }
+
+    .contact-info-list {
+        flex-direction: column;
+    }
+
+    .profile-tabs {
+        overflow-x: auto;
+    }
+}

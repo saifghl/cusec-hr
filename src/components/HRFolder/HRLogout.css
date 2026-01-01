@@ -1,0 +1,107 @@
+.hr-logout-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #6B7280;
+    /* Dark grey background matched from image */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.logout-card {
+    background: white;
+    border-radius: 12px;
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.icon-circle {
+    width: 64px;
+    height: 64px;
+    background-color: #2C3E50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 24px;
+}
+
+.logout-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 12px 0;
+}
+
+.logout-message {
+    font-size: 14px;
+    color: #4B5563;
+    line-height: 1.5;
+    margin: 0 0 32px 0;
+}
+
+.logout-actions {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 10px;
+    background: white;
+    border: 1px solid #D1D5DB;
+    border-radius: 20px;
+    color: #374151;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #F3F4F6;
+}
+
+.btn-logout {
+    flex: 1;
+    padding: 10px;
+    background-color: #2C3E50;
+    border: 1px solid #2C3E50;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #1A202C;
+}
+
+/* Response */
+@media (max-width: 480px) {
+    .logout-card {
+        padding: 30px 20px;
+    }
+
+    .logout-actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn-cancel,
+    .btn-logout {
+        width: 100%;
+        border-radius: 8px;
+        /* Standard radius for stacked buttons often looks better */
+    }
+}

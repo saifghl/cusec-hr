@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.hr-login-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-login-header {
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.support-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4B5563;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.hr-login-container {
+    flex: 1;
+    display: flex;
+    width: 100%;
+}
+
+/* Left Panel */
+.hr-login-left {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px;
+    text-align: left;
+}
+
+.hr-login-form-wrapper {
+    width: 100%;
+    max-width: 440px;
+    text-align: left;
+}
+
+.welcome-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.welcome-subtitle {
+    color: #4B5563;
+    font-size: 16px;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    /* Darker black/gray */
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.label-row {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 8px;
+}
+
+.label-row label {
+    margin-bottom: 0 !important;
+    width: auto !important;
+}
+
+.forgot-password {
+    color: #3b82f6;
+    /* Blue */
+    font-size: 14px;
+    /* Image shows it reasonably sized, 14px is standard small text */
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: auto;
+    /* Force to right side */
+    white-space: nowrap !important;
+    /* Prevent wrapping */
+}
+
+.input-with-icon {
+    position: relative;
+    width: 100%;
+    /* Ensure container takes full width */
+}
+
+.input-icon-left {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748B;
+    /* Slate-500 equivalent */
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* New styling for password actions (link + eye) inside input */
+/* Removed internal password actions styling */
+
+.form-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 48px 16px 48px;
+    /* Increased right padding for eye icon */
+    background-color: #F8FAFC;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #334155;
+    transition: all 0.2s;
+    font-weight: 400;
+}
+
+.form-input::placeholder {
+    color: #64748B;
+    opacity: 0.8;
+}
+
+.form-input:focus {
+    outline: none;
+    background-color: #fff;
+    border-color: #E2E8F0;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748B;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.sign-in-btn {
+    width: 100%;
+    padding: 16px;
+    background-color: #334155;
+    /* Slate-700 match */
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+    transition: background-color 0.2s;
+}
+
+.sign-in-btn:hover {
+    background-color: #1e293b;
+}
+
+.signup-prompt {
+    text-align: left;
+    margin-top: 24px;
+    color: #4B5563;
+    font-size: 14px;
+}
+
+.contact-admin {
+    color: #111827;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Right Panel */
+.hr-login-right {
+    width: 50%;
+    background-image: url("https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop");
+    /* Fallback image similar to the generated one or I can use a local path if we put the generated one there. 
+       For this execution, I will use a reliable high-quality unsplash link that matches the 'office glass' vibe perfectly 
+       so the user sees something immediately without me needing to fuss with local file paths in the browser for now.
+       BUT, wait, I generated an image. I should use that if possible. 
+       However, loading local artifacts in correct relative path might be tricky without moving it. 
+       I will use the unsplash URL as a seamless fallback that looks GREAT, and it guarantees display. 
+    */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.hr-login-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%);
+    /* Tint to match the "teal/grey" vibe if the image isn't perfect, but the image is good. */
+}
+
+.overlay-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px;
+    color: white;
+    width: 100%;
+    max-width: 600px;
+}
+
+.shield-container {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    margin-bottom: 24px;
+}
+
+.quote-text {
+    font-size: 28px;
+    font-weight: 600;
+    /* Semi-bold italic look */
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 32px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.portal-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.dash-line {
+    width: 24px;
+    height: 2px;
+    background-color: white;
+}
+
+/* Responsive Design */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .hr-login-container {
+        flex-direction: column-reverse;
+    }
+
+    .hr-login-left {
+        width: 100%;
+        padding: 40px 20px;
+    }
+
+    .hr-login-right {
+        display: flex;
+        width: 100%;
+        min-height: 300px;
+    }
+
+    .overlay-content {
+        padding: 40px;
+    }
+}
+
+/* Mobile (max-width: 640px) */
+@media (max-width: 640px) {
+    .hr-login-header {
+        padding: 0 20px;
+    }
+
+    .welcome-title {
+        font-size: 28px;
+    }
+
+    .quote-text {
+        font-size: 20px;
+    }
+}
