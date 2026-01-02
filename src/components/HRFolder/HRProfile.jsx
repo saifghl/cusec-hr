@@ -39,7 +39,7 @@ const HRProfile = () => {
                             </div>
                             <h2 className="profile-name">Sarah Jenkins</h2>
                             <p className="profile-role">Senior HR Manager</p>
-                            <span className="status-badge active"><span className="dot"></span> Active</span>
+
                         </div>
 
                         <div className="profile-divider"></div>

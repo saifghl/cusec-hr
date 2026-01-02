@@ -96,23 +96,31 @@
 }
 
 .card-header {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
     gap: 12px;
     margin-bottom: 24px;
+    flex-wrap: nowrap !important;
 }
 
 .card-title {
-    font-size: 18px;
+    font-size: 14px;
+    /* Reduced to match image style */
     font-weight: 600;
-    color: #1A202C;
+    color: #4A5568;
+    /* Updated to match image gray */
     margin: 0;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .card-icon-box {
     color: #4A5568;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 /* Form Groups & Inputs */
@@ -330,11 +338,15 @@ label {
 .location-icon-inside {
     position: absolute;
     left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     color: #718096;
+    display: flex;
+    align-items: center;
 }
 
 .location-input {
-    padding-left: 36px;
+    padding-left: 48px !important;
 }
 
 /* Compensation Toggle */
@@ -419,22 +431,22 @@ label {
     color: #111827;
 }
 
-/* Cancel Button */
+/* Cancel Button (Styled same as Publish) */
 .btn-cancel {
-    background-color: white;
-    border: 1px solid #D1D5DB;
-    color: #374151;
+    background-color: #2D3748;
+    color: white;
+    border: 1px solid #2D3748;
 }
 
 .btn-cancel:hover {
-    background-color: #F3F4F6;
-    border-color: #9CA3AF;
-    color: #111827;
+    background-color: #1A202C;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-cancel:active {
-    background-color: #E5E7EB;
     transform: translateY(1px);
+    box-shadow: none;
 }
 
 /* Publish Button (Primary) */

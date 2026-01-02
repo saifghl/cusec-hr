@@ -25,8 +25,8 @@ const HRCreateJob = () => {
     const LocationIcon = () => (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
     );
-    const DollarIcon = () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+    const RupeeIcon = () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3h12" /><path d="M6 8h12" /><path d="M6 13l8.5 10" /><path d="M6 13h3" /><path d="M9 13c6.667 0 6.667-10 0-10" /></svg>
     );
     const PublishIcon = () => (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><line x1="12" y1="6" x2="12" y2="18"></line><line x1="6" y1="12" x2="18" y2="12"></line></svg>
@@ -187,7 +187,7 @@ const HRCreateJob = () => {
                         {/* Compensation */}
                         <div className="form-card">
                             <div className="card-header">
-                                <div className="card-icon-box"><DollarIcon /></div>
+                                <div className="card-icon-box"><RupeeIcon /></div>
                                 <h3 className="card-title">Compensation</h3>
                             </div>
 
@@ -226,16 +226,14 @@ const HRCreateJob = () => {
                             <div className="form-group" style={{ marginBottom: '16px' }}>
                                 <label>Application Deadline</label>
                                 <div className="date-input-wrapper">
-                                    <input type="text" className="text-input" defaultValue="31/12/2025" />
-                                    <div className="calendar-icon-right"><CalendarIcon /></div>
+                                    <input type="date" className="text-input" />
                                 </div>
                             </div>
 
                             <div className="form-group">
                                 <label>Schedule Publish on date</label>
                                 <div className="date-input-wrapper">
-                                    <input type="text" className="text-input" defaultValue="1/12/2025" />
-                                    <div className="calendar-icon-right"><CalendarIcon /></div>
+                                    <input type="date" className="text-input" />
                                 </div>
                             </div>
                         </div>

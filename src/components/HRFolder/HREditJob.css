@@ -413,18 +413,18 @@ label {
 }
 
 .btn-cancel {
-    background-color: white;
-    border: 1px solid #CBD5E0;
-    color: #4A5568;
+    background-color: #2C3E50;
+    border: none;
+    color: white;
 }
 
 .btn-cancel:hover {
-    background-color: #F7FAFC;
-    border-color: #A0AEC0;
+    background-color: #1A202C;
+    border-color: #1A202C;
 }
 
 .btn-cancel:active {
-    background-color: #EDF2F7;
+    background-color: #1A202C;
     transform: translateY(1px);
 }
 

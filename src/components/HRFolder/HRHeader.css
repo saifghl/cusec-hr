@@ -10,6 +10,9 @@
     padding: 0 40px;
     justify-content: space-between;
     color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .brand-logo {
@@ -80,7 +83,7 @@
 /* Mobile Header adjustments */
 @media (max-width: 640px) {
     .hr-header {
-        padding: 0 20px;
+        /* padding: 0 20px; */
         height: 60px;
     }
 

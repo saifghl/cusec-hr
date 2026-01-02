@@ -377,13 +377,17 @@ input:checked+.slider:before {
 
 .btn-cancel {
     padding: 10px 20px;
-    border: 1px solid #D1D5DB;
-    background: white;
+    background-color: #2C3E50;
+    border: none;
     border-radius: 6px;
     font-size: 14px;
-    color: #374151;
+    color: white;
     font-weight: 600;
     cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background-color: #1A202C;
 }
 
 .btn-save {
