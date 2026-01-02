@@ -1,9 +1,9 @@
 import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import HRHeader from './HRHeader';
-import { useNavigate, NavLink } from 'react-router-dom';
-import './HRProfile.css';
+import './HRProfileSecurity.css';
 
-const HRProfile = () => {
+const HRProfileSecurity = () => {
     const navigate = useNavigate();
 
     // Icons
@@ -12,9 +12,10 @@ const HRProfile = () => {
     const LinkIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>;
     const IdCardIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="12" cy="10" r="2"></circle><path d="M8 2h8"></path><path d="M8 18h8"></path></svg>;
     const MapPinIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>;
+    const LogOutIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>;
 
     return (
-        <div className="hr-profile-page">
+        <div className="hr-profile-security-page">
             <HRHeader />
             <div className="hr-profile-content">
 
@@ -24,8 +25,7 @@ const HRProfile = () => {
                 </div>
 
                 <div className="profile-grid">
-
-                    {/* Left Column: Profile Card */}
+                    {/* Sidebar */}
                     <div className="profile-sidebar-card">
                         <div className="profile-avatar-section">
                             <div className="avatar-wrapper">
@@ -65,18 +65,18 @@ const HRProfile = () => {
                         </div>
                     </div>
 
-                    {/* Right Column: Details & Settings */}
+                    {/* Main Content */}
                     <div className="profile-main-card">
 
                         {/* Tabs */}
                         <div className="profile-tabs">
-                            <NavLink to="/hr-profile" className={({ isActive }) => `tab-btn ${isActive ? 'active' : ''}`}>
+                            <NavLink to="/hr-profile" className={({ isActive }) => `tab-link`}>
                                 General Info
                             </NavLink>
-                            <NavLink to="/hr-profile-security" className={({ isActive }) => `tab-btn ${isActive ? 'active' : ''}`}>
+                            <NavLink to="/hr-profile-security" className={({ isActive }) => `tab-link ${isActive ? 'active' : ''}`}>
                                 Security
                             </NavLink>
-                            <NavLink to="/hr-preferences" className={({ isActive }) => `tab-btn ${isActive ? 'active' : ''}`}>
+                            <NavLink to="/hr-preferences" className={({ isActive }) => `tab-link ${isActive ? 'active' : ''}`}>
                                 Preferences
                             </NavLink>
                         </div>
@@ -84,58 +84,56 @@ const HRProfile = () => {
                         {/* Form Content */}
                         <div className="profile-form-content">
 
-                            {/* Personal Details Section */}
                             <div className="form-section">
-                                <div className="section-header">
-                                    <h3 className="section-title">Personal Details</h3>
-                                    <button className="edit-link">Edit Info</button>
+                                <h3 className="section-title">Security</h3>
+                                <div className="section-subtitle">Change Password</div>
+
+                                <div className="form-grid-security">
+                                    <div className="form-group-security full-width">
+                                        <label>Current Password</label>
+                                        <input type="password" placeholder="e.g. abc" />
+                                    </div>
+                                    <div className="form-group-security">
+                                        <label>New Password</label>
+                                        <input type="password" placeholder="e.g. abc" />
+                                    </div>
+                                    <div className="form-group-security">
+                                        <label>Confirm Password</label>
+                                        <input type="password" placeholder="e.g. abc" />
+                                    </div>
+                                </div>
+                                <p className="helper-text">Minimum 8 characters with a symbol.</p>
+
+                                <div className="security-row">
+                                    <div className="security-info">
+                                        <h4>Two-Factor Authentication</h4>
+                                        <p>Add an extra layer of security to your account.</p>
+                                    </div>
+                                    <label className="switch">
+                                        <input type="checkbox" defaultChecked />
+                                        <span className="slider round"></span>
+                                    </label>
                                 </div>
 
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>First Name:</label>
-                                        <input type="text" defaultValue="Sarah" />
+                                <div className="security-row">
+                                    <div className="security-info">
+                                        <h4>Active Sessions</h4>
+                                        <p>Log out of all other active sessions on other devices.</p>
                                     </div>
-                                    <div className="form-group">
-                                        <label>Last Name:</label>
-                                        <input type="text" defaultValue="Jenkins" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Job Title:</label>
-                                        <input type="text" defaultValue="Senior HR Manager" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Department:</label>
-                                        <input type="text" defaultValue="Human Resources" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Work Email:</label>
-                                        <div className="input-with-icon">
-                                            <span className="input-icon">✉️</span>
-                                            <input type="email" defaultValue="sarah.jenkins@hrportal.com" />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Phone Number:</label>
-                                        <div className="input-with-icon">
-                                            <span className="input-icon">📞</span>
-                                            <input type="tel" defaultValue="+1 (555) 012-3456" />
-                                        </div>
-                                    </div>
-                                    <div className="form-group full-width">
-                                        <label>Employee ID:</label>
-                                        <input type="text" defaultValue="482910" className="bg-light" />
-                                    </div>
+                                    <button className="logout-all-btn" onClick={() => navigate('/hr-logout')}>
+                                        <LogOutIcon /> Log Out All
+                                    </button>
                                 </div>
                             </div>
 
                         </div>
 
-                        {/* Footer Actions */}
+                        {/* Footer */}
                         <div className="profile-footer">
-                            <button className="btn-cancel" onClick={() => navigate(-1)}>Cancel</button>
+                            <button className="btn-cancel" onClick={() => navigate(-1)}>Cancle</button>
                             <button className="btn-save">Save Changes</button>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -143,4 +141,4 @@ const HRProfile = () => {
     );
 };
 
-export default HRProfile;
+export default HRProfileSecurity;

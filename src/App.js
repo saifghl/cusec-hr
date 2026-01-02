@@ -13,6 +13,8 @@ import HREmployeeQueries from './components/HRFolder/HREmployeeQueries';
 import HREmployeeQueryDetail from './components/HRFolder/HREmployeeQueryDetail';
 import HRProfile from './components/HRFolder/HRProfile';
 import HRLogout from './components/HRFolder/HRLogout';
+import HRProfileSecurity from './components/HRFolder/HRProfileSecurity';
+import HRPreferences from './components/HRFolder/HRPreferences';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route path="/hr-query-detail" element={<HREmployeeQueryDetail />} />
           <Route path="/hr-profile" element={<HRProfile />} />
           <Route path="/hr-logout" element={<HRLogout />} />
+          <Route path="/hr-profile-security" element={<HRProfileSecurity />} />
+          <Route path="/hr-preferences" element={<HRPreferences />} />
         </Routes>
       </div>
     </Router>

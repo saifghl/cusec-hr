@@ -1,0 +1,216 @@
+.hr-preferences-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Reuse main content padding from other pages */
+.hr-profile-content {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+    text-align: left;
+}
+
+/* Settings Cards - Specific to Preferences */
+.settings-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid #E5E7EB;
+    /* Subtle border */
+}
+
+.settings-card-header {
+    margin-bottom: 20px;
+}
+
+.settings-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px 0;
+}
+
+.settings-card-subtitle {
+    font-size: 13px;
+    color: #6B7280;
+    margin: 0;
+}
+
+/* Notifications Grid */
+.notifications-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.notification-column h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6B7280;
+    margin: 0 0 16px 0;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.notification-item label {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Custom Checkbox/Radio */
+.custom-checkbox,
+.custom-radio {
+    width: 18px;
+    height: 18px;
+    accent-color: #111827;
+    /* Dark black/grey */
+    cursor: pointer;
+}
+
+/* Language & Region Grid */
+.settings-grid-2-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.settings-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.settings-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.settings-select {
+    padding: 10px 12px;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #374151;
+    background-color: #F9FAFB;
+    width: 100%;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Appearance Theme Cards */
+.theme-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.theme-card {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+}
+
+.theme-card:hover {
+    border-color: #D1D5DB;
+    background-color: #F9FAFB;
+}
+
+.theme-card.active {
+    border-color: #111827;
+    background-color: #F9FAFB;
+}
+
+.theme-card span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Radio Groups horizontal */
+.radio-group-horizontal {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.radio-item span {
+    font-size: 14px;
+    color: #374151;
+}
+
+.section-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Accessibility List */
+.accessibility-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Settings Toggle (Toggle Switch reuse) */
+.settings-toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.settings-toggle-label {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Footer reuse */
+.profile-footer {
+    padding: 20px 30px;
+    background-color: white;
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+
+    .notifications-grid,
+    .settings-grid-2-col,
+    .theme-options {
+        grid-template-columns: 1fr;
+    }
+}
