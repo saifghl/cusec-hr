@@ -1,0 +1,406 @@
+.hr-candidate-resume-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-resume-content {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: #2D3748;
+    text-decoration: underline;
+}
+
+/* Resume Viewer Styles */
+.resume-viewer-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.resume-viewer {
+    background-color: #F8F9FA;
+    /* Light background for viewer context */
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.resume-toolbar {
+    background-color: white;
+    padding: 12px 20px;
+    border-bottom: 1px solid #E2E8F0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.resume-file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #4A5568;
+}
+
+.file-icon {
+    color: #718096;
+}
+
+.resume-filename {
+    font-weight: 600;
+    color: #2D3748;
+}
+
+.resume-updated {
+    font-size: 12px;
+    color: #A0AEC0;
+}
+
+.resume-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.zoom-btn,
+.print-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #718096;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.zoom-btn:hover,
+.print-btn:hover {
+    color: #2D3748;
+}
+
+.zoom-level {
+    font-size: 13px;
+    font-weight: 500;
+    color: #4A5568;
+    min-width: 40px;
+    text-align: center;
+}
+
+.toolbar-divider {
+    color: #E2E8F0;
+    margin: 0 4px;
+}
+
+.download-resume-btn {
+    background-color: #2D3748;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+}
+
+.download-resume-btn:hover {
+    background-color: #1A202C;
+}
+
+/* Resume Document Paper */
+.resume-document {
+    background-color: white;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 800px;
+    /* A4 aspect ratio-ish max width */
+    padding: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    min-height: 800px;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    /* Clean font */
+}
+
+.resume-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #EDF2F7;
+    padding-bottom: 30px;
+}
+
+.resume-title-block {
+    text-align: left;
+}
+
+.resume-name {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1A202C;
+    margin: 0 0 8px 0;
+}
+
+.resume-job {
+    font-size: 18px;
+    color: #4A5568;
+    font-weight: 500;
+    margin: 0;
+}
+
+.resume-contact-block {
+    text-align: right;
+    font-size: 13px;
+    color: #4A5568;
+    line-height: 1.6;
+}
+
+.resume-contact-block p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.resume-contact-block .icon {
+    font-size: 14px;
+    color: #718096;
+}
+
+/* Sections */
+.resume-section {
+    margin-bottom: 30px;
+}
+
+.resume-section-title {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #3182CE;
+    /* Blue heading */
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    letter-spacing: 0.5px;
+    text-align: left;
+}
+
+.resume-text {
+    font-size: 14px;
+    color: #4A5568;
+    line-height: 1.6;
+    margin: 0;
+    text-align: left;
+}
+
+/* Job Items */
+.resume-job-item {
+    margin-bottom: 24px;
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.job-role {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2D3748;
+    margin: 0;
+}
+
+.job-date {
+    font-size: 13px;
+    color: #718096;
+}
+
+.job-company {
+    font-size: 14px;
+    color: #4A5568;
+    font-style: italic;
+    margin: 0 0 8px 0;
+    text-align: left;
+}
+
+.job-bullets {
+    margin: 0;
+    padding-left: 20px;
+    color: #4A5568;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.job-bullets li {
+    margin-bottom: 4px;
+}
+
+/* Two Column Layout for Ed/Skills */
+.resume-cols {
+    display: flex;
+    gap: 40px;
+}
+
+.resume-section.half {
+    flex: 1;
+}
+
+.resume-edu-item {
+    text-align: left;
+}
+
+.edu-degree {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2D3748;
+    margin: 0 0 4px 0;
+}
+
+.edu-school {
+    font-size: 14px;
+    color: #4A5568;
+    margin: 0 0 4px 0;
+}
+
+.edu-year,
+.edu-gpa {
+    font-size: 13px;
+    color: #718096;
+    margin: 0;
+}
+
+.resume-skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.skill-row {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.skill-cat {
+    font-weight: 700;
+    color: #2D3748;
+    margin-right: 6px;
+}
+
+.skill-val {
+    color: #4A5568;
+}
+
+/* Logout Container */
+.logout-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+.logout-dots {
+    color: #A0AEC0;
+    font-size: 20px;
+    line-height: 10px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    margin-right: 10px;
+    transition: color 0.2s;
+}
+
+.logout-dots:hover {
+    color: #4A5568;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #F56565;
+    background: none;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    opacity: 0.8;
+    background-color: #FFF5F5;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-right: -8px;
+}
+
+.logout-btn:active {
+    transform: translateY(1px);
+}
+
+/* Mobile responsive for resume */
+@media (max-width: 768px) {
+    .resume-document {
+        padding: 20px;
+        margin: 10px 0;
+    }
+
+    .resume-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .resume-contact-block {
+        text-align: left;
+    }
+
+    .resume-contact-block p {
+        justify-content: flex-start;
+    }
+
+    .resume-cols {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .hr-resume-content {
+        padding: 20px;
+    }
+}

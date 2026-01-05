@@ -15,6 +15,9 @@ import HRProfile from './components/HRFolder/HRProfile';
 import HRLogout from './components/HRFolder/HRLogout';
 import HRProfileSecurity from './components/HRFolder/HRProfileSecurity';
 import HRPreferences from './components/HRFolder/HRPreferences';
+import HRCandidateResume from './components/HRFolder/HRCandidateResume';
+import HRCandidateNotes from './components/HRFolder/HRCandidateNotes';
+import HRCandidateEmails from './components/HRFolder/HRCandidateEmails';
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
           <Route path="/hr-edit-job" element={<HREditJob />} />
           <Route path="/hr-candidates" element={<HRCandidates />} />
           <Route path="/hr-candidate-profile" element={<HRCandidateProfile />} />
+          <Route path="/hr-candidate-resume" element={<HRCandidateResume />} />
+          <Route path="/hr-candidate-notes" element={<HRCandidateNotes />} />
+          <Route path="/hr-candidate-emails" element={<HRCandidateEmails />} />
           <Route path="/hr-candidate-status" element={<HRCandidateProfileStatus />} />
           <Route path="/hr-queries" element={<HREmployeeQueries />} />
           <Route path="/hr-query-detail" element={<HREmployeeQueryDetail />} />

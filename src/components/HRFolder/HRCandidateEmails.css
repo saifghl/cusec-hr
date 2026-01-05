@@ -1,0 +1,810 @@
+/* Reuse main profile layout styles for consistency */
+.hr-candidate-profile-page {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-profile-content {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: #2D3748;
+    text-decoration: underline;
+}
+
+.profile-layout {
+    display: flex;
+    gap: 30px;
+}
+
+/* Left Sidebar */
+.profile-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px 24px;
+    border: 1px solid #EDF2F7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.avatar-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.large-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.online-status {
+    width: 20px;
+    height: 20px;
+    background-color: #48BB78;
+    border: 3px solid white;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.profile-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0 0 8px 0;
+}
+
+.profile-role {
+    font-size: 14px;
+    color: #4A5568;
+    margin: 0 0 16px 0;
+}
+
+.status-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #EBF8FF;
+    color: #3182CE;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #3182CE;
+    border-radius: 50%;
+}
+
+/* Contact Info */
+.contact-info-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: left;
+    margin-bottom: 30px;
+    border-top: 1px solid #EDF2F7;
+    padding-top: 24px;
+    border-bottom: 1px solid #EDF2F7;
+    padding-bottom: 24px;
+}
+
+.contact-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.contact-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #EBF8FF;
+    color: #3182CE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+
+.contact-label {
+    color: #718096;
+    margin-bottom: 2px;
+}
+
+.contact-value {
+    color: #2D3748;
+    font-weight: 600;
+}
+
+/* Profile Actions */
+.profile-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #2C3E50;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1A202C;
+}
+
+.btn-outline {
+    background-color: white;
+    color: #2D3748;
+    border: 1px solid #CBD5E0;
+}
+
+.btn-outline:hover {
+    background-color: #F7FAFC;
+    border-color: #A0AEC0;
+}
+
+.btn-reject:hover {
+    background-color: #FFF5F5;
+    color: #C53030;
+    border-color: #FC8181;
+}
+
+.btn-black {
+    background-color: #000000;
+    color: white;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-black:hover {
+    background-color: #1A1A1A;
+}
+
+.btn-link-download {
+    background: none;
+    border: none;
+    color: #3182CE;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-link-download:hover {
+    text-decoration: underline;
+}
+
+/* Right Content */
+.profile-main-content {
+    flex: 1;
+    text-align: left;
+}
+
+/* Tabs */
+.profile-tabs {
+    display: flex;
+    border-bottom: 1px solid #EDF2F7;
+    margin-bottom: 24px;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #718096;
+    cursor: pointer;
+    position: relative;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tab-btn:hover {
+    color: #2D3748;
+    background-color: #F7FAFC;
+}
+
+.tab-btn.active {
+    color: #3182CE;
+    border-bottom-color: #3182CE;
+}
+
+.tab-badge {
+    background-color: #EBF8FF;
+    color: #3182CE;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+/* Emails Specific Styles */
+.emails-container {
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid #EDF2F7;
+    overflow: hidden;
+    /* To contain inner scrolls if needed */
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+}
+
+.emails-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #EDF2F7;
+}
+
+.inbox-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A202C;
+    margin: 0;
+}
+
+.compose-btn {
+    background-color: #2C3E50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.compose-btn:hover {
+    background-color: #1A202C;
+}
+
+.emails-layout {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    /* allows flexbox scrolling */
+}
+
+/* Email List (Left Sidebar of Inbox) */
+.email-list {
+    width: 350px;
+    border-right: 1px solid #EDF2F7;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    /* or F8F9FA if different */
+}
+
+.email-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid #EDF2F7;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.email-item:hover {
+    background-color: #F7FAFC;
+}
+
+.email-item.active {
+    background-color: #EBF8FF;
+    border-left: 3px solid #3182CE;
+}
+
+.email-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.email-sender {
+    font-weight: 600;
+    font-size: 14px;
+    color: #2D3748;
+}
+
+.email-item-time {
+    font-size: 12px;
+    color: #A0AEC0;
+}
+
+.email-subject {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D3748;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.email-item.active .email-subject {
+    color: #2B6CB0;
+}
+
+.email-snippet {
+    font-size: 13px;
+    color: #718096;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Email Detail (Right Side) */
+.email-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
+
+.email-detail-header {
+    border-bottom: 1px solid #EDF2F7;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-subject-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+}
+
+.detail-subject-line h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1A202C;
+    margin: 0;
+}
+
+.detail-time {
+    font-size: 13px;
+    color: #718096;
+}
+
+.detail-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meta-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.meta-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.meta-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-name {
+    font-weight: 600;
+    color: #2D3748;
+    font-size: 14px;
+}
+
+.meta-email {
+    font-size: 13px;
+    color: #718096;
+    margin-left: 4px;
+}
+
+.meta-to {
+    font-size: 12px;
+    color: #718096;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: #A0AEC0;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.icon-btn:hover {
+    background-color: #EDF2F7;
+    color: #4A5568;
+}
+
+.email-body-content {
+    flex: 1;
+    color: #4A5568;
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.email-body-content p {
+    margin-bottom: 16px;
+}
+
+.quoted-text {
+    margin-top: 30px;
+    padding-left: 16px;
+    border-left: 2px solid #E2E8F0;
+    color: #718096;
+    font-size: 13px;
+}
+
+.quote-header {
+    margin-bottom: 12px;
+}
+
+/* Reply Box */
+.reply-box {
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    background-color: white;
+    padding: 4px;
+}
+
+.reply-textarea {
+    width: 100%;
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    color: #2D3748;
+    border-radius: 6px 6px 0 0;
+    box-sizing: border-box;
+}
+
+.reply-textarea::placeholder {
+    color: #A0AEC0;
+}
+
+.reply-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-top: 1px solid #E2E8F0;
+    background-color: #F8FAFC;
+    border-radius: 0 0 6px 6px;
+}
+
+.reply-tools {
+    display: flex;
+    gap: 4px;
+}
+
+.tool-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    color: #718096;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool-btn:hover {
+    background-color: #E2E8F0;
+    color: #4A5568;
+}
+
+.send-reply-btn {
+    background-color: #2C3E50;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.send-reply-btn:hover {
+    background-color: #1A202C;
+}
+
+/* Logout Container */
+.logout-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #F56565;
+    background: none;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    opacity: 0.8;
+    background-color: #FFF5F5;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+    }
+
+    .email-list {
+        width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .emails-layout {
+        flex-direction: column;
+    }
+
+    .email-list {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #EDF2F7;
+        height: 300px;
+        /* limit height on mobile */
+        overflow-y: auto;
+    }
+
+    .email-detail {
+        padding: 16px;
+    }
+
+    .detail-subject-line {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .meta-user {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+}
+
+/* Compose View Styles */
+.email-compose {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.compose-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #EDF2F7;
+    padding-bottom: 16px;
+}
+
+.compose-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A202C;
+}
+
+.close-compose-btn {
+    background: none;
+    border: none;
+    color: #A0AEC0;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.close-compose-btn:hover {
+    background-color: #EDF2F7;
+    color: #4A5568;
+}
+
+.compose-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 16px;
+}
+
+.compose-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.compose-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4A5568;
+}
+
+.compose-field input {
+    padding: 10px 12px;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2D3748;
+    background-color: #F8F9FA;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.compose-field input:focus {
+    border-color: #3182CE;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.1);
+}
+
+.compose-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+}
+
+.compose-body textarea {
+    flex: 1;
+    padding: 16px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #2D3748;
+    background-color: white;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.compose-body textarea:focus {
+    border-color: #3182CE;
+    box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.1);
+}
+
+.compose-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #EDF2F7;
+}
+
+.compose-tools {
+    display: flex;
+    gap: 8px;
+}
+
+.compose-actions {
+    display: flex;
+    align-items: center;
+}
