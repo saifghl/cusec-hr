@@ -480,3 +480,30 @@
 .back-btn:hover {
     color: #111827;
 }
+
+.btn-new-query {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: #2C3E50;
+    /* Match theme used in Candidates */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-new-query:hover {
+    background-color: #1A202C;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-new-query:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
