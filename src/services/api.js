@@ -1,9 +1,9 @@
 import axios from "axios";
 
-<<<<<<< HEAD
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
-  withCredentials: true, // ready for auth/session cookies
+  baseURL: "https://cusec-hr.onrender.com",
+  withCredentials: true, 
+  // ready for auth/session cookies
 });
 
 /* ================= JOBS API ================= */
@@ -145,4 +145,4 @@ export const markNotificationAsRead = (notificationId) =>
 // Mark all notifications as read
 export const markAllNotificationsAsRead = (userId) => 
   API.put(`/notifications/${userId}/read-all`);
->>>>>>> c66cf8cff78d2b033112bc992bac8706bb0fc174
+
