@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import HRHeader from './HRHeader';
 import './HREditJob.css';
+import { jobsAPI } from '../../services/api';
+
+const formatDateInput = (date) => {
+  if (!date) return '';
+  return date.split('T')[0]; // handles ISO safely
+};
 
 const HREditJob = () => {
     const navigate = useNavigate();
-    // State for interactive elements make it feel alive
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [jobData, setJobData] = useState({});
     const [workType, setWorkType] = useState('On site');
+    const [skills, setSkills] = useState(['Figma', 'UI/UX']);
+    const [questions, setQuestions] = useState(['How many years of experience do you have?', 'Are you willing to relocate?']);
 
-    // Icons
+    // Icons (all defined)
     const SearchIcon = () => (
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
     );
@@ -52,6 +63,95 @@ const HREditJob = () => {
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
     );
 
+    useEffect(() => {
+        const jobId = id || '1';
+        const fetchJob = async () => {
+            try {
+                const response = await jobsAPI.getJobById(jobId);
+                setJobData({
+  ...response.data,
+  application_deadline: formatDateInput(response.data.application_deadline),
+  scheduled_publish_date: formatDateInput(response.data.scheduled_publish_date),
+  target_closing_date: formatDateInput(response.data.target_closing_date),
+});
+
+                setWorkType(response.data.work_arrangement || 'On site');
+                setSkills(response.data.required_skills ? response.data.required_skills.split(',') : []);
+                setQuestions(response.data.prequalifying_questions ? JSON.parse(response.data.prequalifying_questions) : []);
+            } catch (error) {
+                console.error('API failed, using dummy data:', error);
+                // Fallback to dummy data
+                setJobData({
+                    job_title: 'Senior Product Designer',
+                    department: 'Design',
+                    job_type: 'Full Time',
+                    job_description: 'As a script Designer, you will lead design individual...',
+                    additional_qualification: 'must have graduate from any design or computer science degree',
+                    industry_experience: 'SaaS',
+                    work_arrangement: 'On site',
+                    city: 'Pune',
+                    country: 'Maharashtra',
+                    min_salary: '20000',
+                    max_salary: '30000',
+                    experience_level: 'Mid Level (3-5 Years)',
+                    application_deadline: '31/12/2025',
+                    target_closing_date: '1/12/2025',
+                    status: 'Active'
+                });
+            }
+            setLoading(false);
+        };
+        fetchJob();
+    }, [id]);
+
+    const handleSave = async () => {
+        const jobId = id || '1';
+        try {
+            const updates = {
+                job_title: jobData.job_title,
+                department: jobData.department,
+                job_type: jobData.job_type,
+                job_description: jobData.job_description,
+                additional_qualification: jobData.additional_qualification,
+                industry_experience: jobData.industry_experience,
+                work_arrangement: workType,
+                city: jobData.city,
+                country: jobData.country,
+                min_salary: Number(jobData.min_salary),
+                max_salary: Number(jobData.max_salary),
+                salary_negotiable: jobData.salary_negotiable ? 1 : 0,
+                salary_hidden: jobData.salary_hidden ? 1 : 0,
+                experience_level: jobData.experience_level,
+                application_deadline: jobData.application_deadline,
+                scheduled_publish_date: jobData.scheduled_publish_date,
+                target_closing_date: jobData.target_closing_date,
+                status: jobData.status,
+                required_skills: skills.join(','),
+                prequalifying_questions: JSON.stringify(questions)
+            };
+            await jobsAPI.updateJob(jobId, updates);
+            alert('Job updated successfully');
+            navigate('/hr-jobs');
+        } catch (error) {
+            console.error('Error updating job:', error);
+            alert('Failed to update job');
+        }
+    };
+
+    const handleUnpublish = async () => {
+        const jobId = id || '1';
+        try {
+            await jobsAPI.changeJobStatus(jobId, 'UNPUBLISHED');
+            alert('Job unpublished');
+            navigate('/hr-jobs');
+        } catch (error) {
+            console.error('Error unpublishing job:', error);
+            alert('Failed to unpublish job');
+        }
+    };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
 
     return (
         <div className="hr-edit-job-page">
@@ -79,13 +179,13 @@ const HREditJob = () => {
 
                             <div className="form-group" style={{ marginBottom: '20px' }}>
                                 <label>Job Title<span className="required-star">*</span></label>
-                                <input type="text" className="text-input" defaultValue="Senior Product Designer" />
+                                <input type="text" className="text-input" value={jobData.job_title || ''} onChange={(e) => setJobData({ ...jobData, job_title: e.target.value })} />
                             </div>
 
                             <div className="form-row">
                                 <div className="form-group">
                                     <label>Department</label>
-                                    <select className="select-input" defaultValue="Design">
+                                    <select className="select-input" value={jobData.department || ''} onChange={(e) => setJobData({ ...jobData, department: e.target.value })}>
                                         <option>Design</option>
                                         <option>Engineering</option>
                                         <option>Marketing</option>
@@ -93,10 +193,11 @@ const HREditJob = () => {
                                 </div>
                                 <div className="form-group">
                                     <label>Job Type<span className="required-star">*</span></label>
-                                    <select className="select-input" defaultValue="Full Time">
+                                    <select className="select-input" value={jobData.job_type || ''} onChange={(e) => setJobData({ ...jobData, job_type: e.target.value })}>
                                         <option>Full Time</option>
                                         <option>Part Time</option>
                                         <option>Contract</option>
+                                        <option>Internship</option>
                                     </select>
                                 </div>
                             </div>
@@ -118,12 +219,12 @@ const HREditJob = () => {
                                         <button className="toolbar-btn">list</button>
                                         <button className="toolbar-btn">link</button>
                                     </div>
-                                    <textarea className="editor-textarea" defaultValue="As a script Designer, you will lead design individual..." ></textarea>
+                                    <textarea className="editor-textarea" value={jobData.job_description || ''} onChange={(e) => setJobData({ ...jobData, job_description: e.target.value })} />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Prequalifying Questions - NEW SECTION */}
+                        {/* Prequalifying Questions */}
                         <div className="form-card">
                             <div className="card-header" style={{ justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -133,21 +234,24 @@ const HREditJob = () => {
                                 <span className="badge-max-questions">Max 5 questions</span>
                             </div>
 
-                            <div className="form-group" style={{ marginBottom: '20px' }}>
-                                <label>Question 1</label>
-                                <div className="question-input-wrapper">
-                                    <input type="text" className="text-input" defaultValue="e.g. How many years of experience do you have with figma?" />
-                                    <button className="btn-delete-question"><TrashIcon /></button>
+                            {questions.map((q, index) => (
+                                <div className="form-group" key={index}>
+                                    <label>Question {index + 1}</label>
+                                    <div className="question-input-wrapper">
+                                        <input type="text" className="text-input" value={q} onChange={(e) => {
+                                            const newQuestions = [...questions];
+                                            newQuestions[index] = e.target.value;
+                                            setQuestions(newQuestions);
+                                        }} />
+                                        <button className="btn-delete-question" onClick={() => setQuestions(questions.filter((_, i) => i !== index))}><TrashIcon /></button>
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
+                            {questions.length < 5 && (
 
-                            <div className="form-group">
-                                <label>Question 2</label>
-                                <div className="question-input-wrapper">
-                                    <input type="text" className="text-input" defaultValue="e.g. Are you willing to relocate?" />
-                                    <button className="btn-delete-question"><TrashIcon /></button>
-                                </div>
-                            </div>
+
+                                <button onClick={() => setQuestions([...questions, ''])}>Add Question</button>
+                            )}
                         </div>
 
                         {/* Requirement */}
@@ -160,19 +264,23 @@ const HREditJob = () => {
                             <div className="form-group" style={{ marginBottom: '20px' }}>
                                 <label>Required Skills</label>
                                 <div className="skills-input-container">
-                                    <div className="skill-chip">
-                                        Figma <span className="remove-skill">×</span>
-                                    </div>
-                                    <div className="skill-chip">
-                                        UI/UX <span className="remove-skill">×</span>
-                                    </div>
-                                    <input type="text" className="skills-input" placeholder="Type Skill and hit enter" />
+                                    {skills.map((skill, index) => (
+                                        <div className="skill-chip" key={index}>
+                                            {skill} <span className="remove-skill" onClick={() => setSkills(skills.filter((_, i) => i !== index))}>×</span>
+                                        </div>
+                                    ))}
+                                    <input type="text" className="skills-input" placeholder="Type Skill and hit enter" onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && e.target.value) {
+                                            setSkills([...skills, e.target.value]);
+                                            e.target.value = '';
+                                        }
+                                    }} />
                                 </div>
                             </div>
 
                             <div className="form-group" style={{ marginBottom: '20px' }}>
                                 <label>Industry Experience</label>
-                                <select className="select-input" defaultValue="Select Required Industry Experience">
+                                <select className="select-input" value={jobData.industry_experience || ''} onChange={(e) => setJobData({ ...jobData, industry_experience: e.target.value })}>
                                     <option disabled>Select Required Industry Experience</option>
                                     <option>SaaS</option>
                                     <option>Fintech</option>
@@ -182,7 +290,7 @@ const HREditJob = () => {
 
                             <div className="form-group">
                                 <label>Additional Qualification</label>
-                                <textarea className="text-input" rows="3" style={{ resize: 'none' }} defaultValue="must have graduate from any design or computer science degree"></textarea>
+                                <textarea className="text-input" rows="3" style={{ resize: 'none' }} value={jobData.additional_qualification || ''} onChange={(e) => setJobData({ ...jobData, additional_qualification: e.target.value })} />
                             </div>
                         </div>
                     </div>
@@ -218,7 +326,10 @@ const HREditJob = () => {
                                 <label>City, Country</label>
                                 <div className="location-input-wrapper">
                                     <div className="location-icon-inside"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
-                                    <input type="text" className="text-input location-input" defaultValue="Pune, Maharashtra" />
+                                    <input type="text" className="text-input location-input" value={`${jobData.city || ''}, ${jobData.country || ''}`} onChange={(e) => {
+                                        const [city, country] = e.target.value.split(', ');
+                                        setJobData({ ...jobData, city, country });
+                                    }} />
                                 </div>
                             </div>
                         </div>
@@ -233,16 +344,16 @@ const HREditJob = () => {
                             <div className="form-row">
                                 <div className="form-group">
                                     <label>Min Salary</label>
-                                    <input type="text" className="text-input" defaultValue="₹20000" />
+                                    <input type="text" className="text-input" value={jobData.min_salary || ''} onChange={(e) => setJobData({ ...jobData, min_salary: e.target.value })} />
                                 </div>
                                 <div className="form-group">
                                     <label>Max Salary</label>
-                                    <input type="text" className="text-input" defaultValue="₹30000" />
+                                    <input type="text" className="text-input" value={jobData.max_salary || ''} onChange={(e) => setJobData({ ...jobData, max_salary: e.target.value })} />
                                 </div>
                             </div>
 
-                            <button className="negotiable-toggle">
-                                Negotiable/Hide
+                            <button className="negotiable-toggle" onClick={() => setJobData({ ...jobData, salary_negotiable: !jobData.salary_negotiable })}>
+                                {jobData.salary_negotiable ? 'Negotiable' : 'Not Negotiable'}/Hide
                             </button>
                         </div>
 
@@ -255,7 +366,7 @@ const HREditJob = () => {
 
                             <div className="form-group" style={{ marginBottom: '16px' }}>
                                 <label>Experience Level</label>
-                                <select className="select-input" defaultValue="Mid Level (3-5 Years)">
+                                <select className="select-input" value={jobData.experience_level || ''} onChange={(e) => setJobData({ ...jobData, experience_level: e.target.value })}>
                                     <option>Mid Level (3-5 Years)</option>
                                     <option>Junior Level (0-2 Years)</option>
                                     <option>Senior Level (5+ Years)</option>
@@ -265,7 +376,7 @@ const HREditJob = () => {
                             <div className="form-group" style={{ marginBottom: '16px' }}>
                                 <label>Application Deadline</label>
                                 <div className="date-input-wrapper">
-                                    <input type="text" className="text-input" defaultValue="31/12/2025" />
+                                    <input type="text" className="text-input" value={jobData.application_deadline || ''} onChange={(e) => setJobData({ ...jobData, application_deadline: e.target.value })} />
                                     <div className="calendar-icon-right"><CalendarIcon /></div>
                                 </div>
                             </div>
@@ -273,17 +384,18 @@ const HREditJob = () => {
                             <div className="form-group" style={{ marginBottom: '16px' }}>
                                 <label>Target Closing Date</label>
                                 <div className="date-input-wrapper">
-                                    <input type="text" className="text-input" defaultValue="1/12/2025" />
+                                    <input type="text" className="text-input" value={jobData.target_closing_date || ''} onChange={(e) => setJobData({ ...jobData, target_closing_date: e.target.value })} />
                                     <div className="calendar-icon-right"><CalendarIcon /></div>
                                 </div>
                             </div>
 
                             <div className="form-group">
                                 <label>Current status</label>
-                                <select className="select-input" style={{ color: '#48BB78' }} defaultValue="Active">
-                                    <option style={{ color: '#1A202C' }}>Active</option>
-                                    <option style={{ color: '#1A202C' }}>Closed</option>
-                                    <option style={{ color: '#1A202C' }}>Draft</option>
+                                <select className="select-input" style={{ color: jobData.status === 'ACTIVE' ? '#48BB78' : '#1A202C' }} value={jobData.status || ''} onChange={(e) => setJobData({ ...jobData, status: e.target.value })}>
+                                    <option value="ACTIVE" style={{ color: '#48BB78' }}>Active</option>
+                                    <option value="CLOSED" style={{ color: '#1A202C' }}>Closed</option>
+                                    <option value="DRAFT" style={{ color: '#1A202C' }}>Draft</option>
+                                    <option value="UNPUBLISHED" style={{ color: '#1A202C' }}>Unpublished</option>
                                 </select>
                             </div>
                         </div>
@@ -292,10 +404,10 @@ const HREditJob = () => {
 
                 <div className="edit-job-footer">
                     <button className="footer-btn btn-cancel" onClick={() => navigate('/hr-jobs')}>Cancel</button>
-                    <button className="footer-btn btn-unpublish">
+                    <button className="footer-btn btn-unpublish" onClick={handleUnpublish}>
                         <UnpublishIcon /> Unpublish
                     </button>
-                    <button className="footer-btn btn-save">Save Changes</button>
+                    <button className="footer-btn btn-save" onClick={handleSave}>Save Changes</button>
                 </div>
             </div>
 

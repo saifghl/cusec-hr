@@ -73,7 +73,11 @@ const login = async (req, res) => {
     );
 
     // 5. Send response
+<<<<<<< HEAD
+    res.json({
+=======
    res.json({
+>>>>>>> c66cf8cff78d2b033112bc992bac8706bb0fc174
       token,
       user: {
 <<<<<<< HEAD
