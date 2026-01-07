@@ -33,12 +33,12 @@ function App() {
           <Route path="/hr-create-job" element={<HRCreateJob />} />
           <Route path="/hr-edit-job" element={<HREditJob />} />
           <Route path="/hr-candidates" element={<HRCandidates />} />
-          <Route path="/hr-candidate-profile" element={<HRCandidateProfile />} />
+          <Route path="/hr-candidate-profile/:id" element={<HRCandidateProfile />} />
           <Route path="/hr-add-candidate" element={<HRAddCandidate />} />
-          <Route path="/hr-candidate-resume" element={<HRCandidateResume />} />
-          <Route path="/hr-candidate-notes" element={<HRCandidateNotes />} />
-          <Route path="/hr-candidate-emails" element={<HRCandidateEmails />} />
-          <Route path="/hr-candidate-status" element={<HRCandidateProfileStatus />} />
+          <Route path="/hr-candidate-resume/:id" element={<HRCandidateResume />} />
+          <Route path="/hr-candidate-notes/:id" element={<HRCandidateNotes />} />
+          <Route path="/hr-candidate-emails/:id" element={<HRCandidateEmails />} />
+          <Route path="/hr-candidate-status/:id" element={<HRCandidateProfileStatus />} />
           <Route path="/hr-queries" element={<HREmployeeQueries />} />
           <Route path="/hr-add-query" element={<HRAddQuery />} />
           <Route path="/hr-notifications" element={<HRNotifications />} />
