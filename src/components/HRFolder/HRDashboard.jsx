@@ -1,11 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HRDashboard.css';
 import HRHeader from './HRHeader';
+import { dashboardAPI } from "../../services/api";
 
 const HRDashboard = () => {
     const navigate = useNavigate();
-    // Icons
+
+    const [dashboard, setDashboard] = useState({
+        activeJobs: 0,
+        totalApplicants: 0,
+        newQueries: 0,
+        interviewsToday: 0,
+        recentActivity: []
+    });
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        dashboardAPI.getHRDashboard()
+            .then(res => {
+                setDashboard(res.data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Dashboard fetch error:", err);
+                setLoading(false);
+            });
+    }, []);
+
+    // Icons (unchanged)
     const DashboardIcon = () => (
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
     );
@@ -52,10 +76,10 @@ const HRDashboard = () => {
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
     );
 
-    // Dummy Activity Data
+    // Dummy Activity Data (kept as is to preserve UI/UX)
     const activities = [
         { id: 1, text: 'Sarah J. applied for UX Designer', time: '2 Min ago', type: 'user', color: 'blue' },
-        { id: 2, text: 'Interview done withJane Smith', time: '1 Hour ago', type: 'calendar', color: 'purple' },
+        { id: 2, text: 'Interview done with Jane Smith', time: '1 Hour ago', type: 'calendar', color: 'purple' },
         { id: 3, text: 'New Query regarding company Benefits', time: '3 Hour ago', type: 'help', color: 'orange' },
         { id: 4, text: 'Mike T. accepted the offer', time: '5 Hour ago', type: 'check', color: 'green' },
     ];
@@ -67,7 +91,7 @@ const HRDashboard = () => {
         if (type === 'help') comp = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><text x="12" y="18" textAnchor="middle" fontSize="16" fontWeight="bold">?</text></svg>;
         if (type === 'check') comp = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>;
 
-        return <div className={`activity-icon-box bg-${color}-light`}>{comp}</div>;
+       return <div className={`activity-icon-box bg-${color}-light`}>{comp}</div>;
     };
 
     return (
@@ -113,7 +137,7 @@ const HRDashboard = () => {
                         </div>
                         <div className="stat-value-container">
                             <div className="stat-value-row" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'flex-start', gap: '12px' }}>
-                                <div className="stat-value">12</div>
+                                <div className="stat-value">{loading ? "..." : dashboard.activeJobs}</div>
                                 <div className="stat-detail">2+ this week</div>
                             </div>
                         </div>
@@ -125,7 +149,7 @@ const HRDashboard = () => {
                             <UsersIconBig />
                         </div>
                         <div className="stat-value-row" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-                            <div className="stat-value">1,240</div>
+                            <div className="stat-value">{loading ? "..." : dashboard.totalApplicants}</div>
                             <div className="stat-detail">+2% vs last week</div>
                         </div>
                     </div>
@@ -136,7 +160,7 @@ const HRDashboard = () => {
                             <ImageIcon />
                         </div>
                         <div className="stat-value-row" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-                            <div className="stat-value">8</div>
+                            <div className="stat-value">{loading ? "..." : dashboard.newQueries}</div>
                             <div className="stat-detail">+3 since login</div>
                         </div>
                     </div>
@@ -147,7 +171,7 @@ const HRDashboard = () => {
                             <CalendarIcon />
                         </div>
                         <div className="stat-value-row" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-                            <div className="stat-value">3</div>
+                            <div className="stat-value">{loading ? "..." : dashboard.interviewsToday}</div>
                             <div className="stat-meta">Scheduled</div>
                         </div>
                     </div>
