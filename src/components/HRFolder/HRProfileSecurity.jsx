@@ -1,10 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import HRHeader from './HRHeader';
 import './HRProfileSecurity.css';
+import { updatePassword, updateSecurity } from '../../services/api';
 
 const HRProfileSecurity = () => {
     const navigate = useNavigate();
+    const [saving, setSaving] = useState(false);
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+    });
+    const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+
+    const handlePasswordChange = (field, value) => {
+        setPasswordData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleSavePassword = async () => {
+        if (passwordData.newPassword !== passwordData.confirmPassword) {
+            alert('New password and confirm password do not match');
+            return;
+        }
+
+        if (passwordData.newPassword.length < 8) {
+            alert('Password must be at least 8 characters long');
+            return;
+        }
+
+        try {
+            setSaving(true);
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || user.user_id || 1;
+            await updatePassword(userId, passwordData);
+            alert('Password updated successfully!');
+            setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+        } catch (error) {
+            console.error('Error updating password:', error);
+            alert(error.response?.data?.error || 'Failed to update password');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleSaveSecurity = async () => {
+        try {
+            setSaving(true);
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || user.user_id || 1;
+            await updateSecurity(userId, { two_factor_enabled: twoFactorEnabled });
+            alert('Security settings updated successfully!');
+        } catch (error) {
+            console.error('Error updating security:', error);
+            alert('Failed to update security settings');
+        } finally {
+            setSaving(false);
+        }
+    };
 
     // Icons
     const MailIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>;
@@ -91,15 +144,30 @@ const HRProfileSecurity = () => {
                                 <div className="form-grid-security">
                                     <div className="form-group-security full-width">
                                         <label>Current Password</label>
-                                        <input type="password" placeholder="e.g. abc" />
+                                        <input 
+                                            type="password" 
+                                            placeholder="Enter current password"
+                                            value={passwordData.currentPassword}
+                                            onChange={(e) => handlePasswordChange('currentPassword', e.target.value)}
+                                        />
                                     </div>
                                     <div className="form-group-security">
                                         <label>New Password</label>
-                                        <input type="password" placeholder="e.g. abc" />
+                                        <input 
+                                            type="password" 
+                                            placeholder="Enter new password"
+                                            value={passwordData.newPassword}
+                                            onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
+                                        />
                                     </div>
                                     <div className="form-group-security">
                                         <label>Confirm Password</label>
-                                        <input type="password" placeholder="e.g. abc" />
+                                        <input 
+                                            type="password" 
+                                            placeholder="Confirm new password"
+                                            value={passwordData.confirmPassword}
+                                            onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
+                                        />
                                     </div>
                                 </div>
                                 <p className="helper-text">Minimum 8 characters with a symbol.</p>
@@ -110,7 +178,11 @@ const HRProfileSecurity = () => {
                                         <p>Add an extra layer of security to your account.</p>
                                     </div>
                                     <label className="switch">
-                                        <input type="checkbox" defaultChecked />
+                                        <input 
+                                            type="checkbox" 
+                                            checked={twoFactorEnabled}
+                                            onChange={(e) => setTwoFactorEnabled(e.target.checked)}
+                                        />
                                         <span className="slider round"></span>
                                     </label>
                                 </div>
@@ -130,8 +202,17 @@ const HRProfileSecurity = () => {
 
                         {/* Footer */}
                         <div className="profile-footer">
-                            <button className="btn-cancel" onClick={() => navigate(-1)}>Cancle</button>
-                            <button className="btn-save">Save Changes</button>
+                            <button className="btn-cancel" onClick={() => navigate(-1)}>Cancel</button>
+                            <button 
+                                className="btn-save" 
+                                onClick={() => {
+                                    handleSavePassword();
+                                    handleSaveSecurity();
+                                }}
+                                disabled={saving}
+                            >
+                                {saving ? 'Saving...' : 'Save Changes'}
+                            </button>
                         </div>
 
                     </div>

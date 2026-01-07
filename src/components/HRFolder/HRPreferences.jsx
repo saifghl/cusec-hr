@@ -1,11 +1,121 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import HRHeader from './HRHeader';
 import './HRPreferences.css';
 import './HRProfile.css'; // Reusing layout styles from Profile
+import { fetchProfile, updatePreferences } from '../../services/api';
 
 const HRPreferences = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [preferences, setPreferences] = useState({
+        // Notifications
+        emailNotifications: {
+            newJobAssignments: true,
+            candidateApplicationUpdates: true,
+            systemAnnouncements: false,
+            marketingEmails: false
+        },
+        inAppNotifications: {
+            newMessages: true,
+            taskReminders: true,
+            statusChanges: true,
+            securityAlerts: true
+        },
+        // Language & Region
+        language: 'en-US',
+        timezone: 'Auto detect (GMT-5)',
+        dateFormat: 'dd/mm/yyyy',
+        timeFormat: '24-hour',
+        // Appearance
+        theme: 'light',
+        fontSize: 'medium',
+        layoutDensity: 'comfortable',
+        // Accessibility
+        highContrast: false,
+        reduceAnimations: false,
+        screenReaderSupport: false,
+        largerClickableAreas: false,
+        // Default Settings
+        defaultLandingPage: 'Dashboard',
+        defaultListView: 'List',
+        rememberFilters: true,
+        autoRefresh: false
+    });
+
+    useEffect(() => {
+        loadPreferences();
+    }, []);
+
+    const loadPreferences = async () => {
+        try {
+            setLoading(true);
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || user.user_id || 1;
+            const response = await fetchProfile(userId);
+            const data = response.data;
+            
+            if (data) {
+                setPreferences({
+                    emailNotifications: data.email_notifications || preferences.emailNotifications,
+                    inAppNotifications: data.in_app_notifications || preferences.inAppNotifications,
+                    language: data.language || 'en-US',
+                    timezone: data.timezone || 'Auto detect (GMT-5)',
+                    dateFormat: data.date_format || 'dd/mm/yyyy',
+                    timeFormat: data.time_format || '24-hour',
+                    theme: data.theme || 'light',
+                    fontSize: data.font_size || 'medium',
+                    layoutDensity: data.layout_density || 'comfortable',
+                    highContrast: data.high_contrast === 1,
+                    reduceAnimations: data.reduce_animations === 1,
+                    screenReaderSupport: data.screen_reader_support === 1,
+                    largerClickableAreas: data.larger_clickable_areas === 1,
+                    defaultLandingPage: data.default_landing_page || 'Dashboard',
+                    defaultListView: data.default_list_view || 'List',
+                    rememberFilters: data.remember_filters === 1,
+                    autoRefresh: data.auto_refresh === 1
+                });
+            }
+        } catch (error) {
+            console.error('Error loading preferences:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSave = async () => {
+        try {
+            setSaving(true);
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || user.user_id || 1;
+            await updatePreferences(userId, preferences);
+            alert('Preferences saved successfully!');
+        } catch (error) {
+            console.error('Error saving preferences:', error);
+            alert('Failed to save preferences');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const updatePreference = (key, value) => {
+        setPreferences(prev => ({ ...prev, [key]: value }));
+    };
+
+    const updateEmailNotification = (key, value) => {
+        setPreferences(prev => ({
+            ...prev,
+            emailNotifications: { ...prev.emailNotifications, [key]: value }
+        }));
+    };
+
+    const updateInAppNotification = (key, value) => {
+        setPreferences(prev => ({
+            ...prev,
+            inAppNotifications: { ...prev.inAppNotifications, [key]: value }
+        }));
+    };
 
     // Icons reuse
     const MailIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>;
@@ -94,38 +204,78 @@ const HRPreferences = () => {
                                     <div className="notification-column">
                                         <h4>Email Notifications</h4>
                                         <div className="notification-item">
-                                            <input type="checkbox" className="custom-checkbox" defaultChecked />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-checkbox" 
+                                                checked={preferences.emailNotifications.newJobAssignments}
+                                                onChange={(e) => updateEmailNotification('newJobAssignments', e.target.checked)}
+                                            />
                                             <label>New job assignments</label>
                                         </div>
                                         <div className="notification-item">
-                                            <input type="checkbox" className="custom-checkbox" defaultChecked />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-checkbox" 
+                                                checked={preferences.emailNotifications.candidateApplicationUpdates}
+                                                onChange={(e) => updateEmailNotification('candidateApplicationUpdates', e.target.checked)}
+                                            />
                                             <label>Candidate application updates</label>
                                         </div>
                                         <div className="notification-item">
-                                            <input type="checkbox" className="custom-checkbox" />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-checkbox" 
+                                                checked={preferences.emailNotifications.systemAnnouncements}
+                                                onChange={(e) => updateEmailNotification('systemAnnouncements', e.target.checked)}
+                                            />
                                             <label>System announcements</label>
                                         </div>
                                         <div className="notification-item">
-                                            <input type="checkbox" className="custom-checkbox" />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-checkbox" 
+                                                checked={preferences.emailNotifications.marketingEmails}
+                                                onChange={(e) => updateEmailNotification('marketingEmails', e.target.checked)}
+                                            />
                                             <label>Marketing & promotional emails</label>
                                         </div>
                                     </div>
                                     <div className="notification-column">
                                         <h4>In-App Notifications</h4>
                                         <div className="notification-item">
-                                            <input type="checkbox" className="custom-checkbox" defaultChecked />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-checkbox" 
+                                                checked={preferences.inAppNotifications.newMessages}
+                                                onChange={(e) => updateInAppNotification('newMessages', e.target.checked)}
+                                            />
                                             <label>New messages</label>
                                         </div>
                                         <div className="notification-item">
-                                            <input type="checkbox" className="custom-checkbox" defaultChecked />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-checkbox" 
+                                                checked={preferences.inAppNotifications.taskReminders}
+                                                onChange={(e) => updateInAppNotification('taskReminders', e.target.checked)}
+                                            />
                                             <label>Task reminders</label>
                                         </div>
                                         <div className="notification-item">
-                                            <input type="checkbox" className="custom-checkbox" defaultChecked />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-checkbox" 
+                                                checked={preferences.inAppNotifications.statusChanges}
+                                                onChange={(e) => updateInAppNotification('statusChanges', e.target.checked)}
+                                            />
                                             <label>Status changes</label>
                                         </div>
                                         <div className="notification-item">
-                                            <input type="checkbox" className="custom-checkbox" defaultChecked />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-checkbox" 
+                                                checked={preferences.inAppNotifications.securityAlerts}
+                                                onChange={(e) => updateInAppNotification('securityAlerts', e.target.checked)}
+                                            />
                                             <label>Security alerts</label>
                                         </div>
                                     </div>
@@ -141,33 +291,57 @@ const HRPreferences = () => {
                                 <div className="settings-grid-2-col">
                                     <div className="settings-field">
                                         <label>Language</label>
-                                        <select className="settings-select">
-                                            <option>English (US)</option>
-                                            <option>English (UK)</option>
+                                        <select 
+                                            className="settings-select"
+                                            value={preferences.language}
+                                            onChange={(e) => updatePreference('language', e.target.value)}
+                                        >
+                                            <option value="en-US">English (US)</option>
+                                            <option value="en-UK">English (UK)</option>
                                         </select>
                                     </div>
                                     <div className="settings-field">
                                         <label>Time Zone</label>
-                                        <select className="settings-select">
+                                        <select 
+                                            className="settings-select"
+                                            value={preferences.timezone}
+                                            onChange={(e) => updatePreference('timezone', e.target.value)}
+                                        >
                                             <option>Auto detect (GMT-5)</option>
                                         </select>
                                     </div>
                                     <div className="settings-field">
                                         <label>Date Format</label>
-                                        <select className="settings-select">
-                                            <option>dd/mm/yyyy</option>
-                                            <option>mm/dd/yyyy</option>
+                                        <select 
+                                            className="settings-select"
+                                            value={preferences.dateFormat}
+                                            onChange={(e) => updatePreference('dateFormat', e.target.value)}
+                                        >
+                                            <option value="dd/mm/yyyy">dd/mm/yyyy</option>
+                                            <option value="mm/dd/yyyy">mm/dd/yyyy</option>
                                         </select>
                                     </div>
                                     <div className="settings-field">
                                         <label>Time Format</label>
                                         <div className="radio-group-horizontal" style={{ marginTop: '10px' }}>
                                             <div className="radio-item">
-                                                <input type="radio" name="timefmt" className="custom-radio" />
+                                                <input 
+                                                    type="radio" 
+                                                    name="timefmt" 
+                                                    className="custom-radio" 
+                                                    checked={preferences.timeFormat === '12-hour'}
+                                                    onChange={() => updatePreference('timeFormat', '12-hour')}
+                                                />
                                                 <span>12-hour</span>
                                             </div>
                                             <div className="radio-item">
-                                                <input type="radio" name="timefmt" className="custom-radio" defaultChecked />
+                                                <input 
+                                                    type="radio" 
+                                                    name="timefmt" 
+                                                    className="custom-radio" 
+                                                    checked={preferences.timeFormat === '24-hour'}
+                                                    onChange={() => updatePreference('timeFormat', '24-hour')}
+                                                />
                                                 <span>24-hour</span>
                                             </div>
                                         </div>
@@ -183,15 +357,27 @@ const HRPreferences = () => {
 
                                 <span className="section-label">Theme</span>
                                 <div className="theme-options">
-                                    <div className="theme-card active">
+                                    <div 
+                                        className={`theme-card ${preferences.theme === 'light' ? 'active' : ''}`}
+                                        onClick={() => updatePreference('theme', 'light')}
+                                        style={{ cursor: 'pointer' }}
+                                    >
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                                         <span>Light (Default)</span>
                                     </div>
-                                    <div className="theme-card">
+                                    <div 
+                                        className={`theme-card ${preferences.theme === 'dark' ? 'active' : ''}`}
+                                        onClick={() => updatePreference('theme', 'dark')}
+                                        style={{ cursor: 'pointer' }}
+                                    >
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                                         <span>Dark</span>
                                     </div>
-                                    <div className="theme-card">
+                                    <div 
+                                        className={`theme-card ${preferences.theme === 'system' ? 'active' : ''}`}
+                                        onClick={() => updatePreference('theme', 'system')}
+                                        style={{ cursor: 'pointer' }}
+                                    >
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                                         <span>System Default</span>
                                     </div>
@@ -202,15 +388,33 @@ const HRPreferences = () => {
                                         <span className="section-label">Font Size</span>
                                         <div className="radio-group-horizontal">
                                             <div className="radio-item">
-                                                <input type="radio" name="fontsz" className="custom-radio" />
+                                                <input 
+                                                    type="radio" 
+                                                    name="fontsz" 
+                                                    className="custom-radio" 
+                                                    checked={preferences.fontSize === 'small'}
+                                                    onChange={() => updatePreference('fontSize', 'small')}
+                                                />
                                                 <span>Small</span>
                                             </div>
                                             <div className="radio-item">
-                                                <input type="radio" name="fontsz" className="custom-radio" defaultChecked />
+                                                <input 
+                                                    type="radio" 
+                                                    name="fontsz" 
+                                                    className="custom-radio" 
+                                                    checked={preferences.fontSize === 'medium'}
+                                                    onChange={() => updatePreference('fontSize', 'medium')}
+                                                />
                                                 <span>Medium (Default)</span>
                                             </div>
                                             <div className="radio-item">
-                                                <input type="radio" name="fontsz" className="custom-radio" />
+                                                <input 
+                                                    type="radio" 
+                                                    name="fontsz" 
+                                                    className="custom-radio" 
+                                                    checked={preferences.fontSize === 'large'}
+                                                    onChange={() => updatePreference('fontSize', 'large')}
+                                                />
                                                 <span>Large</span>
                                             </div>
                                         </div>
@@ -219,11 +423,23 @@ const HRPreferences = () => {
                                         <span className="section-label">Layout Density</span>
                                         <div className="radio-group-horizontal">
                                             <div className="radio-item">
-                                                <input type="radio" name="density" className="custom-radio" />
+                                                <input 
+                                                    type="radio" 
+                                                    name="density" 
+                                                    className="custom-radio" 
+                                                    checked={preferences.layoutDensity === 'compact'}
+                                                    onChange={() => updatePreference('layoutDensity', 'compact')}
+                                                />
                                                 <span>Compact</span>
                                             </div>
                                             <div className="radio-item">
-                                                <input type="radio" name="density" className="custom-radio" defaultChecked />
+                                                <input 
+                                                    type="radio" 
+                                                    name="density" 
+                                                    className="custom-radio" 
+                                                    checked={preferences.layoutDensity === 'comfortable'}
+                                                    onChange={() => updatePreference('layoutDensity', 'comfortable')}
+                                                />
                                                 <span>Comfortable (Default)</span>
                                             </div>
                                         </div>
@@ -240,19 +456,43 @@ const HRPreferences = () => {
                                     </div>
                                     <div className="accessibility-list">
                                         <div className="radio-item">
-                                            <input type="checkbox" className="custom-radio" style={{ borderRadius: '50%' }} />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-radio" 
+                                                style={{ borderRadius: '50%' }}
+                                                checked={preferences.highContrast}
+                                                onChange={(e) => updatePreference('highContrast', e.target.checked)}
+                                            />
                                             <span>High contrast mode</span>
                                         </div>
                                         <div className="radio-item">
-                                            <input type="checkbox" className="custom-radio" style={{ borderRadius: '50%' }} />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-radio" 
+                                                style={{ borderRadius: '50%' }}
+                                                checked={preferences.reduceAnimations}
+                                                onChange={(e) => updatePreference('reduceAnimations', e.target.checked)}
+                                            />
                                             <span>Reduce animations</span>
                                         </div>
                                         <div className="radio-item">
-                                            <input type="checkbox" className="custom-radio" style={{ borderRadius: '50%' }} />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-radio" 
+                                                style={{ borderRadius: '50%' }}
+                                                checked={preferences.screenReaderSupport}
+                                                onChange={(e) => updatePreference('screenReaderSupport', e.target.checked)}
+                                            />
                                             <span>Enable screen reader support</span>
                                         </div>
                                         <div className="radio-item">
-                                            <input type="checkbox" className="custom-radio" style={{ borderRadius: '50%' }} />
+                                            <input 
+                                                type="checkbox" 
+                                                className="custom-radio" 
+                                                style={{ borderRadius: '50%' }}
+                                                checked={preferences.largerClickableAreas}
+                                                onChange={(e) => updatePreference('largerClickableAreas', e.target.checked)}
+                                            />
                                             <span>Larger clickable areas</span>
                                         </div>
                                     </div>
@@ -264,27 +504,43 @@ const HRPreferences = () => {
                                     </div>
                                     <div className="settings-field" style={{ marginBottom: '16px' }}>
                                         <label>Default landing page</label>
-                                        <select className="settings-select">
-                                            <option>Dashboard</option>
+                                        <select 
+                                            className="settings-select"
+                                            value={preferences.defaultLandingPage}
+                                            onChange={(e) => updatePreference('defaultLandingPage', e.target.value)}
+                                        >
+                                            <option value="Dashboard">Dashboard</option>
                                         </select>
                                     </div>
                                     <div className="settings-field" style={{ marginBottom: '16px' }}>
                                         <label>Default list view</label>
-                                        <select className="settings-select">
-                                            <option>List</option>
+                                        <select 
+                                            className="settings-select"
+                                            value={preferences.defaultListView}
+                                            onChange={(e) => updatePreference('defaultListView', e.target.value)}
+                                        >
+                                            <option value="List">List</option>
                                         </select>
                                     </div>
                                     <div className="settings-toggle-row">
                                         <span className="settings-toggle-label">Remember filters</span>
                                         <label className="switch">
-                                            <input type="checkbox" defaultChecked />
+                                            <input 
+                                                type="checkbox" 
+                                                checked={preferences.rememberFilters}
+                                                onChange={(e) => updatePreference('rememberFilters', e.target.checked)}
+                                            />
                                             <span className="slider round"></span>
                                         </label>
                                     </div>
                                     <div className="settings-toggle-row">
                                         <span className="settings-toggle-label">Auto-refresh data</span>
                                         <label className="switch">
-                                            <input type="checkbox" />
+                                            <input 
+                                                type="checkbox" 
+                                                checked={preferences.autoRefresh}
+                                                onChange={(e) => updatePreference('autoRefresh', e.target.checked)}
+                                            />
                                             <span className="slider round"></span>
                                         </label>
                                     </div>
@@ -296,7 +552,9 @@ const HRPreferences = () => {
                         {/* Footer */}
                         <div className="profile-footer">
                             <button className="btn-cancel" onClick={() => navigate(-1)}>Cancel</button>
-                            <button className="btn-save">Save Changes</button>
+                            <button className="btn-save" onClick={handleSave} disabled={saving || loading}>
+                                {saving ? 'Saving...' : 'Save Changes'}
+                            </button>
                         </div>
                     </div>
                 </div>
