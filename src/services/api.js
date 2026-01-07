@@ -9,7 +9,7 @@ const API = axios.create({
   withCredentials: true,
 });
 
-// Add token automatically if exists
+// Attach token automatically
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -28,10 +28,23 @@ export const deleteJob = (id) => API.delete(`/jobs/${id}`);
 export const changeJobStatus = (id, status) =>
   API.patch(`/jobs/${id}/status`, { status });
 
+export const jobsAPI = {
+  createJob,
+  getAllJobs,
+  getJobById,
+  updateJob,
+  deleteJob,
+  changeJobStatus,
+};
+
 /* ================= DASHBOARD ================= */
 
 export const getHRDashboard = () =>
   API.get("/dashboard/hr-dashboard");
+
+export const dashboardAPI = {
+  getHRDashboard,
+};
 
 /* ================= CANDIDATES ================= */
 
@@ -41,22 +54,23 @@ export const getCandidateById = (id) =>
 export const updateCandidateStatus = (id, status) =>
   API.patch(`/candidates/${id}/status`, { status });
 
+export const candidatesAPI = {
+  getAllCandidates,
+  getCandidateById,
+  updateCandidateStatus,
+};
+
 /* ================= QUERIES ================= */
 
-// Get all queries
 export const getAllQueries = (params = {}) => {
   const queryString = new URLSearchParams(params).toString();
   return API.get(`/queries${queryString ? `?${queryString}` : ""}`);
 };
 
-// Create query  ✅ FIX FOR YOUR ERROR
-export const createQuery = (formData) => {
-  return API.post("/queries", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+export const createQuery = (formData) =>
+  API.post("/queries", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
-};
 
 export const getQueryById = (id) =>
   API.get(`/queries/${id}`);
@@ -85,45 +99,29 @@ export const uploadAttachment = (id, message_id, file) => {
   formData.append("message_id", message_id);
 
   return API.post(`/queries/${id}/attachments`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+    headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
 export const getQueryActivity = (id) =>
   API.get(`/queries/${id}/activity`);
 
-/* ================= NOTIFICATIONS ================= */
-
-export const getNotifications = (userId, params = {}) => {
-  const queryString = new URLSearchParams(params).toString();
-  return API.get(
-    `/notifications/${userId}${queryString ? `?${queryString}` : ""}`
-  );
+export const queriesAPI = {
+  getAllQueries,
+  createQuery,
+  getQueryById,
+  getQueryMessages,
+  sendReply,
+  updateQueryStatus,
+  addQueryNote,
+  getQueryNotes,
+  assignQuery,
+  uploadAttachment,
+  getQueryActivity,
 };
 
-export const getNotificationStats = (userId) =>
-  API.get(`/notifications/${userId}/stats`);
+/* ================= NOTIFICATIONS ================= */
 
-export const markNotificationAsRead = (notificationId) =>
-  API.put(`/notifications/${notificationId}/read`);
-
-export const markAllNotificationsAsRead = (userId) =>
-  API.put(`/notifications/${userId}/read-all`);
-
-/* ================= AUTH ================= */
-
-export const login = (data) =>
-  API.post("/auth/login", data);
-
-export const logout = () =>
-  API.post("/auth/logout");
-
-export const me = () =>
-  API.get("/auth/me");
-
-export default API;
 
 
 
