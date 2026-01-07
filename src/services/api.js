@@ -1,58 +1,15 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: "https://cusec-hr.onrender.com",
-  withCredentials: true, 
-  // ready for auth/session cookies
-});
+/* =====================================================
+   AXIOS INSTANCE
+===================================================== */
 
-/* ================= JOBS API ================= */
-export const jobsAPI = {
-  createJob: (data) => api.post("/jobs", data),
-  getAllJobs: () => api.get("/jobs"),
-  getJobById: (id) => api.get(`/jobs/${id}`),
-  updateJob: (id, data) => api.put(`/jobs/${id}`, data),
-  deleteJob: (id) => api.delete(`/jobs/${id}`),
-  changeJobStatus: (id, status) =>
-    api.patch(`/jobs/${id}/status`, { status }),
-};
-
-/* ================= DASHBOARD API ================= */
-export const dashboardAPI = {
-  // HR Dashboard stats
-  getHRDashboard: () => api.get("/dashboard/hr-dashboard"),
-};
-
-/* ================= CANDIDATES API ================= */
-export const candidatesAPI = {
-  getAllCandidates: () => api.get("/candidates"),
-  getCandidateById: (id) => api.get(`/candidates/${id}`),
-  updateCandidateStatus: (id, status) =>
-    api.patch(`/candidates/${id}/status`, { status }),
-};
-
-/* ================= QUERIES API ================= */
-export const queriesAPI = {
-  getAllQueries: () => api.get("/queries"),
-  getQueryById: (id) => api.get(`/queries/${id}`),
-  updateQueryStatus: (id, status) =>
-    api.patch(`/queries/${id}/status`, { status }),
-};
-
-/* ================= AUTH / SESSION (READY) ================= */
-export const authAPI = {
-  login: (data) => api.post("/auth/login", data),
-  logout: () => api.post("/auth/logout"),
-  me: () => api.get("/auth/me"),
-};
-
-export default api;
-=======
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://cusec-hr.onrender.com",
+  withCredentials: true,
 });
 
-// Add token to requests if available
+// Add token automatically if exists
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -61,88 +18,103 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-/* ================= USERS ================= */
-export const fetchProfile = (id) => API.get(`/users/${id}`);
-export const updateProfile = (id, data) => API.put(`/users/${id}`, data);
-export const updatePassword = (id, data) =>
-  API.put(`/users/${id}/password`, data);
-export const updateSecurity = (id, data) =>
-  API.put(`/users/${id}/security`, data);
-export const updatePreferences = (id, data) =>
-  API.put(`/users/${id}/preferences`, data);
+/* ================= JOBS API ================= */
 
-/* ================= QUERIES ================= */
-// Get all queries with optional filters
-export const getAllQueries = (params = {}) => {
-  const queryString = new URLSearchParams(params).toString();
-  return API.get(`/queries${queryString ? `?${queryString}` : ""}`);
+export const jobsAPI = {
+  createJob: (data) => API.post("/jobs", data),
+  getAllJobs: () => API.get("/jobs"),
+  getJobById: (id) => API.get(`/jobs/${id}`),
+  updateJob: (id, data) => API.put(`/jobs/${id}`, data),
+  deleteJob: (id) => API.delete(`/jobs/${id}`),
+  changeJobStatus: (id, status) =>
+    API.patch(`/jobs/${id}/status`, { status }),
 };
 
-// Create new query
-export const createQuery = (formData) => {
-  return API.post("/queries", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+/* ================= DASHBOARD API ================= */
+
+export const dashboardAPI = {
+  getHRDashboard: () => API.get("/dashboard/hr-dashboard"),
 };
 
-// Get query by ID
-export const getQueryById = (id) => API.get(`/queries/${id}`);
+/* ================= CANDIDATES API ================= */
 
-// Get query messages
-export const getQueryMessages = (id) =>
-  API.get(`/queries/${id}/messages`);
-
-// Send reply to query
-export const sendReply = (id, data) =>
-  API.post(`/queries/${id}/reply`, data);
-
-// Update query status
-export const updateQueryStatus = (id, status) =>
-  API.put(`/queries/${id}/status`, { status });
-
-// Add note to query
-export const addQueryNote = (id, note, created_by) =>
-  API.post(`/queries/${id}/notes`, { note, created_by });
-
-// Get query notes
-export const getQueryNotes = (id) => API.get(`/queries/${id}/notes`);
-
-// Assign query to user
-export const assignQuery = (id, assigned_to) =>
-  API.put(`/queries/${id}/assign`, { assigned_to });
-
-// Upload attachment
-export const uploadAttachment = (id, message_id, file) => {
-  const formData = new FormData();
-  formData.append("attachment", file);
-  formData.append("message_id", message_id);
-  return API.post(`/queries/${id}/attachments`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export const candidatesAPI = {
+  getAllCandidates: () => API.get("/candidates"),
+  getCandidateById: (id) => API.get(`/candidates/${id}`),
+  updateCandidateStatus: (id, status) =>
+    API.patch(`/candidates/${id}/status`, { status }),
 };
 
-// Get query activity history
-export const getQueryActivity = (id) => API.get(`/queries/${id}/activity`);
+/* ================= QUERIES API ================= */
 
-/* ================= NOTIFICATIONS ================= */
-// Get all notifications for a user
-export const getNotifications = (userId, params = {}) => {
-  const queryString = new URLSearchParams(params).toString();
-  return API.get(`/notifications/${userId}${queryString ? `?${queryString}` : ""}`);
+export const queriesAPI = {
+  getAllQueries: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return API.get(`/queries${queryString ? `?${queryString}` : ""}`);
+  },
+
+  createQuery: (formData) =>
+    API.post("/queries", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+
+  getQueryById: (id) => API.get(`/queries/${id}`),
+
+  getQueryMessages: (id) => API.get(`/queries/${id}/messages`),
+
+  sendReply: (id, data) => API.post(`/queries/${id}/reply`, data),
+
+  updateQueryStatus: (id, status) =>
+    API.put(`/queries/${id}/status`, { status }),
+
+  addQueryNote: (id, note, created_by) =>
+    API.post(`/queries/${id}/notes`, { note, created_by }),
+
+  getQueryNotes: (id) => API.get(`/queries/${id}/notes`),
+
+  assignQuery: (id, assigned_to) =>
+    API.put(`/queries/${id}/assign`, { assigned_to }),
+
+  uploadAttachment: (id, message_id, file) => {
+    const formData = new FormData();
+    formData.append("attachment", file);
+    formData.append("message_id", message_id);
+    return API.post(`/queries/${id}/attachments`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  getQueryActivity: (id) => API.get(`/queries/${id}/activity`),
 };
 
-// Get notification stats
-export const getNotificationStats = (userId) => API.get(`/notifications/${userId}/stats`);
+/* ================= NOTIFICATIONS API ================= */
 
-// Mark notification as read
-export const markNotificationAsRead = (notificationId) => 
-  API.put(`/notifications/${notificationId}/read`);
+export const notificationsAPI = {
+  getNotifications: (userId, params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return API.get(
+      `/notifications/${userId}${queryString ? `?${queryString}` : ""}`
+    );
+  },
 
-// Mark all notifications as read
-export const markAllNotificationsAsRead = (userId) => 
-  API.put(`/notifications/${userId}/read-all`);
+  getNotificationStats: (userId) =>
+    API.get(`/notifications/${userId}/stats`),
+
+  markNotificationAsRead: (notificationId) =>
+    API.put(`/notifications/${notificationId}/read`),
+
+  markAllNotificationsAsRead: (userId) =>
+    API.put(`/notifications/${userId}/read-all`),
+};
+
+/* ================= AUTH API ================= */
+
+export const authAPI = {
+  login: (data) => API.post("/auth/login", data),
+  logout: () => API.post("/auth/logout"),
+  me: () => API.get("/auth/me"),
+};
+
+export default API;
+
 
