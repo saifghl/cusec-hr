@@ -1,9 +1,112 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HRHeader from './HRHeader';
 import './HRNotifications.css';
+import { getNotifications, getNotificationStats, markNotificationAsRead } from '../../services/api';
 
 const HRNotifications = () => {
     const [filter, setFilter] = useState('All');
+    const [loading, setLoading] = useState(true);
+    const [notifications, setNotifications] = useState([]);
+    const [stats, setStats] = useState({ total: 0, unread: 0, urgent: 0 });
+
+    useEffect(() => {
+        loadNotifications();
+        loadStats();
+    }, [filter]);
+
+    const loadNotifications = async () => {
+        try {
+            setLoading(true);
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || user.user_id || 1;
+            const response = await getNotifications(userId, { filter, sort: 'newest' });
+            const grouped = response.data.grouped || {};
+            
+            // Convert grouped object to sections array
+            const sections = Object.keys(grouped).map(title => ({
+                title,
+                items: grouped[title].map(item => ({
+                    id: item.notification_id,
+                    type: item.type || 'system',
+                    icon: getIconForType(item.type),
+                    title: item.title,
+                    desc: item.description,
+                    time: formatTime(item.created_at),
+                    tags: item.tags || [],
+                    isUnread: !item.is_read,
+                    actions: item.actions || []
+                }))
+            }));
+            
+            setNotifications(sections);
+        } catch (error) {
+            console.error('Error loading notifications:', error);
+            // Fallback to mock data if API fails
+            setNotifications(getMockSections());
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loadStats = async () => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || user.user_id || 1;
+            const response = await getNotificationStats(userId);
+            setStats(response.data);
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        }
+    };
+
+    const formatTime = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 60) return `${diffMins} minutes ago`;
+        if (diffHours < 24) return `${diffHours} hours ago`;
+        if (diffDays === 1) return 'Yesterday';
+        if (diffDays < 7) return `${diffDays} days ago`;
+        return date.toLocaleDateString();
+    };
+
+    const getIconForType = (type) => {
+        const icons = {
+            alert: <AlertIcon />,
+            applicant: <UserPlusIcon />,
+            system: <MegaphoneIcon />,
+            calendar: <CalendarIcon />,
+            success: <CheckCircleIcon />,
+            file: <FileTextIcon />
+        };
+        return icons[type] || <AlertIcon />;
+    };
+
+    const getMockSections = () => {
+        return [
+            {
+                title: 'Today',
+                items: [
+                    {
+                        id: 1,
+                        type: 'alert',
+                        icon: <AlertIcon />,
+                        title: 'Contract Expiry Alert: Sarah Jenkins',
+                        desc: 'The employment contract for Sarah Jenkins expires in 7 days. Please review renewal options immediately to avoid service interruption.',
+                        time: '2 hours ago',
+                        tags: ['Urgent'],
+                        isUnread: true,
+                        actions: [{ label: 'Review Contract', primary: false }]
+                    }
+                ]
+            }
+        ];
+    };
 
     // Icons
     const AlertIcon = () => (
@@ -112,13 +215,13 @@ const HRNotifications = () => {
                 <div className="notifications-filter-bar">
                     <div className="filter-chips">
                         <button className={`chip ${filter === 'All' ? 'active' : ''}`} onClick={() => setFilter('All')}>
-                            All <span className="badge-count">12</span>
+                            All <span className="badge-count">{stats.total || 0}</span>
                         </button>
                         <button className={`chip ${filter === 'Unread' ? 'active' : ''}`} onClick={() => setFilter('Unread')}>
-                            <span className="dot-unread"></span> Unread <span className="badge-count light">5</span>
+                            <span className="dot-unread"></span> Unread <span className="badge-count light">{stats.unread || 0}</span>
                         </button>
                         <button className={`chip ${filter === 'Urgent' ? 'active' : ''}`} onClick={() => setFilter('Urgent')}>
-                            <span className="dot-urgent"></span> Urgent <span className="badge-count light">1</span>
+                            <span className="dot-urgent"></span> Urgent <span className="badge-count light">{stats.urgent || 0}</span>
                         </button>
                         <button className={`chip ${filter === 'System' ? 'active' : ''}`} onClick={() => setFilter('System')}>
                             <span className="icon-system"></span> System
@@ -134,7 +237,12 @@ const HRNotifications = () => {
                 </div>
 
                 {/* Notifications Lists */}
-                {sections.map(section => (
+                {loading ? (
+                    <div style={{ padding: '2rem', textAlign: 'center' }}>Loading notifications...</div>
+                ) : notifications.length === 0 ? (
+                    <div style={{ padding: '2rem', textAlign: 'center' }}>No notifications found</div>
+                ) : (
+                    notifications.map(section => (
                     <div className="notifications-section" key={section.title}>
                         <h3 className="section-header">{section.title}</h3>
                         <div className="notifications-list">
@@ -174,7 +282,8 @@ const HRNotifications = () => {
                             ))}
                         </div>
                     </div>
-                ))}
+                    ))
+                )}
 
                 <div className="load-more-container">
                     <button className="load-more-btn">Load older notifications</button>

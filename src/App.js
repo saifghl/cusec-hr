@@ -42,7 +42,7 @@ function App() {
           <Route path="/hr-queries" element={<HREmployeeQueries />} />
           <Route path="/hr-add-query" element={<HRAddQuery />} />
           <Route path="/hr-notifications" element={<HRNotifications />} />
-          <Route path="/hr-query-detail" element={<HREmployeeQueryDetail />} />
+          <Route path="/hr-query-detail/:id" element={<HREmployeeQueryDetail />} />
           <Route path="/hr-profile" element={<HRProfile />} />
           <Route path="/hr-logout" element={<HRLogout />} />
           <Route path="/hr-profile-security" element={<HRProfileSecurity />} />
