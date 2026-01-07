@@ -9,7 +9,7 @@ const API = axios.create({
   withCredentials: true,
 });
 
-// Attach token automatically
+// Token interceptor
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -121,6 +121,49 @@ export const queriesAPI = {
 };
 
 /* ================= NOTIFICATIONS ================= */
+
+export const getNotifications = (userId, params = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  return API.get(
+    `/notifications/${userId}${queryString ? `?${queryString}` : ""}`
+  );
+};
+
+export const getNotificationStats = (userId) =>
+  API.get(`/notifications/${userId}/stats`);
+
+export const markNotificationAsRead = (notificationId) =>
+  API.put(`/notifications/${notificationId}/read`);
+
+export const markAllNotificationsAsRead = (userId) =>
+  API.put(`/notifications/${userId}/read-all`);
+
+export const notificationsAPI = {
+  getNotifications,
+  getNotificationStats,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+};
+
+/* ================= AUTH ================= */
+
+export const login = (data) =>
+  API.post("/auth/login", data);
+
+export const logout = () =>
+  API.post("/auth/logout");
+
+export const me = () =>
+  API.get("/auth/me");
+
+export const authAPI = {
+  login,
+  logout,
+  me,
+};
+
+export default API;
+
 
 
 
