@@ -9,7 +9,7 @@ const API = axios.create({
   withCredentials: true,
 });
 
-// Token interceptor
+// Add token automatically
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -18,13 +18,27 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+/* ================= USERS ================= */
+
+export const fetchProfile = (id) => API.get(`/users/${id}`);
+export const updateProfile = (id, data) =>
+  API.put(`/users/${id}`, data);
+export const updatePassword = (id, data) =>
+  API.put(`/users/${id}/password`, data);
+export const updateSecurity = (id, data) =>
+  API.put(`/users/${id}/security`, data);
+export const updatePreferences = (id, data) =>
+  API.put(`/users/${id}/preferences`, data);
+
 /* ================= JOBS ================= */
 
 export const createJob = (data) => API.post("/jobs", data);
 export const getAllJobs = () => API.get("/jobs");
 export const getJobById = (id) => API.get(`/jobs/${id}`);
-export const updateJob = (id, data) => API.put(`/jobs/${id}`, data);
-export const deleteJob = (id) => API.delete(`/jobs/${id}`);
+export const updateJob = (id, data) =>
+  API.put(`/jobs/${id}`, data);
+export const deleteJob = (id) =>
+  API.delete(`/jobs/${id}`);
 export const changeJobStatus = (id, status) =>
   API.patch(`/jobs/${id}/status`, { status });
 
@@ -48,9 +62,12 @@ export const dashboardAPI = {
 
 /* ================= CANDIDATES ================= */
 
-export const getAllCandidates = () => API.get("/candidates");
+export const getAllCandidates = () =>
+  API.get("/candidates");
+
 export const getCandidateById = (id) =>
   API.get(`/candidates/${id}`);
+
 export const updateCandidateStatus = (id, status) =>
   API.patch(`/candidates/${id}/status`, { status });
 
@@ -163,6 +180,7 @@ export const authAPI = {
 };
 
 export default API;
+
 
 
 
