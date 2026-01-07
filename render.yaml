@@ -1,0 +1,9 @@
+# render.yaml — tells Render how to deploy your project
+
+services:
+  - type: web
+    name: cusec-hr
+    env: static
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "build"
+    branch: "main"
