@@ -1,11 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HRHeader from './HRHeader';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './HREmployeeQueryDetail.css';
+import {
+    getQueryById,
+    getQueryMessages,
+    sendReply,
+    updateQueryStatus,
+    addQueryNote,
+    getQueryNotes,
+    assignQuery,
+    getQueryActivity
+} from '../../services/api';
 
 const HREmployeeQueryDetail = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [activeTab, setActiveTab] = useState('reply');
+    const [query, setQuery] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [notes, setNotes] = useState([]);
+    const [activity, setActivity] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [replyMessage, setReplyMessage] = useState('');
+    const [noteText, setNoteText] = useState('');
+    const [sendViaEmail, setSendViaEmail] = useState(true);
+    const [sendWhatsapp, setSendWhatsapp] = useState(false);
+    const [currentStatus, setCurrentStatus] = useState('');
 
     // Icons
     const ChevronDown = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>;
@@ -19,6 +40,171 @@ const HREmployeeQueryDetail = () => {
     const MailIcon = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>;
     const SendIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>;
 
+    // Fetch query data
+    useEffect(() => {
+        if (id) {
+            fetchQueryData();
+        }
+    }, [id]);
+
+    const fetchQueryData = async () => {
+        try {
+            setLoading(true);
+            const [queryRes, messagesRes, notesRes, activityRes] = await Promise.all([
+                getQueryById(id),
+                getQueryMessages(id),
+                getQueryNotes(id),
+                getQueryActivity(id)
+            ]);
+
+            setQuery(queryRes.data);
+            setCurrentStatus(queryRes.data.status);
+            setMessages(messagesRes.data);
+            setNotes(notesRes.data);
+            setActivity(activityRes.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching query data:', error);
+            setLoading(false);
+        }
+    };
+
+    const formatDateTime = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    const getStatusDisplay = (status) => {
+        const statusMap = {
+            'NEW': 'New',
+            'IN_PROGRESS': 'In Progress',
+            'FOLLOW_UP': 'Follow-up',
+            'RESOLVED': 'Resolved'
+        };
+        return statusMap[status] || status;
+    };
+
+    const getStatusClass = (status) => {
+        if (status === 'NEW') return 'new';
+        if (status === 'IN_PROGRESS') return 'in-progress';
+        if (status === 'FOLLOW_UP') return 'follow-up';
+        if (status === 'RESOLVED') return 'resolved';
+        return '';
+    };
+
+    const handleStatusChange = async (newStatus) => {
+        try {
+            await updateQueryStatus(id, newStatus);
+            setCurrentStatus(newStatus);
+            setQuery(prev => ({ ...prev, status: newStatus }));
+            fetchQueryData(); // Refresh data
+        } catch (error) {
+            console.error('Error updating status:', error);
+            alert('Error updating status');
+        }
+    };
+
+    const handleSendReply = async () => {
+        if (!replyMessage.trim()) {
+            alert('Please enter a message');
+            return;
+        }
+
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            await sendReply(id, {
+                message: replyMessage,
+                sender_name: user.name || 'HR User',
+                sender_email: user.email || 'hr@example.com',
+                send_via_email: sendViaEmail,
+                send_whatsapp: sendWhatsapp
+            });
+
+            setReplyMessage('');
+            fetchQueryData(); // Refresh messages
+            alert('Reply sent successfully');
+        } catch (error) {
+            console.error('Error sending reply:', error);
+            alert('Error sending reply');
+        }
+    };
+
+    const handleAddNote = async () => {
+        if (!noteText.trim()) {
+            alert('Please enter a note');
+            return;
+        }
+
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            await addQueryNote(id, noteText, user.id || 1);
+            setNoteText('');
+            fetchQueryData(); // Refresh notes
+            alert('Note added successfully');
+        } catch (error) {
+            console.error('Error adding note:', error);
+            alert('Error adding note');
+        }
+    };
+
+    const handleAssignQuery = async () => {
+        const userId = prompt('Enter user ID to assign query to:');
+        if (userId) {
+            try {
+                await assignQuery(id, parseInt(userId));
+                fetchQueryData();
+                alert('Query assigned successfully');
+            } catch (error) {
+                console.error('Error assigning query:', error);
+                alert('Error assigning query');
+            }
+        }
+    };
+
+    const handleDownloadAttachment = (filePath, fileName) => {
+        // In a real app, you'd fetch the file from the server
+        window.open(`http://localhost:5000/${filePath}`, '_blank');
+    };
+
+    if (loading) {
+        return (
+            <div className="hr-query-detail-page">
+                <HRHeader />
+                <div style={{ padding: '2rem', textAlign: 'center' }}>Loading query details...</div>
+            </div>
+        );
+    }
+
+    if (!query) {
+        return (
+            <div className="hr-query-detail-page">
+                <HRHeader />
+                <div style={{ padding: '2rem', textAlign: 'center' }}>Query not found</div>
+            </div>
+        );
+    }
+
+    // Get the first message (candidate's initial message)
+    const initialMessage = messages.find(m => m.sender_type === 'CANDIDATE') || messages[0];
+
     return (
         <div className="hr-query-detail-page">
             <HRHeader />
@@ -30,17 +216,37 @@ const HREmployeeQueryDetail = () => {
                 {/* Page Header */}
                 <div className="detail-header">
                     <div className="detail-title-block">
-                        <h1 className="detail-title">Query #4920: Application Query – Interview Status</h1>
+                        <h1 className="detail-title">Query #{query.query_number}: {query.subject}</h1>
                         <div className="detail-meta">
                             <span className="meta-icon">💼</span>
-                            <span className="meta-text">Sarah Jenkins | Applied for: <span className="highlight">Senior UX Designer</span></span>
+                            <span className="meta-text">
+                                {query.name} | {query.query_type}
+                                {query.related_job_title && (
+                                    <span> | Applied for: <span className="highlight">{query.related_job_title}</span></span>
+                                )}
+                            </span>
                         </div>
                     </div>
                     <div className="detail-actions">
-                        <div className="status-badge-large in-progress">
+                        <div className={`status-badge-large ${getStatusClass(currentStatus)}`}>
                             <span className="status-dot"></span>
-                            In Progress
-                            <ChevronDown />
+                            {getStatusDisplay(currentStatus)}
+                            <select
+                                value={currentStatus}
+                                onChange={(e) => handleStatusChange(e.target.value)}
+                                style={{
+                                    border: 'none',
+                                    background: 'transparent',
+                                    color: 'inherit',
+                                    cursor: 'pointer',
+                                    marginLeft: '8px'
+                                }}
+                            >
+                                <option value="NEW">New</option>
+                                <option value="IN_PROGRESS">In Progress</option>
+                                <option value="FOLLOW_UP">Follow-up</option>
+                                <option value="RESOLVED">Resolved</option>
+                            </select>
                         </div>
                         <button className="more-btn">
                             <MoreHorizontal />
@@ -51,105 +257,91 @@ const HREmployeeQueryDetail = () => {
                 <div className="detail-grid">
                     {/* Left Column */}
                     <div className="detail-left-col">
-
                         {/* Message Card */}
-                        <div className="message-card">
-                            <div className="message-header">
-                                <div className="sender-info">
-                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" alt="Sarah" className="sender-avatar" />
-                                    <div className="sender-details">
-                                        <h3 className="sender-name">Sarah Jenkins</h3>
-                                        <p className="sender-email">sarah.jenkins@company.com</p>
-                                    </div>
-                                </div>
-                                <span className="message-date">July 15, 2023 at 09:42 AM</span>
-                            </div>
-
-                            <div className="message-content">
-                                <h4 className="message-subject">Subject: Interview Schedule Confirmation</h4>
-                                <div className="message-body">
-                                    <p>Hi Recruiter Flow Team,</p>
-                                    <p>I hope you're having a great week. I just wanted to check on the status of my interview regarding the take-home assignment I submitted last Tuesday. I haven't heard back yet and wanted to ensure you received the files correctly.</p>
-                                    <p>I've re-attached my portfolio and resume below just in case. Looking forward to hearing from you regarding the next steps.</p>
-                                    <p>Best regards,<br />Sarah</p>
-                                </div>
-                            </div>
-
-                            <div className="attachments-section">
-                                <h5 className="attachments-title"><PaperclipIcon /> Attachments (2)</h5>
-                                <div className="attachments-list">
-                                    <div className="attachment-item">
-                                        <div className="file-icon pdf">PDF</div>
-                                        <div className="file-info">
-                                            <span className="file-name">Jenkins_Resume_2023.pdf</span>
-                                            <span className="file-size">1.2 MB</span>
+                        {initialMessage && (
+                            <div className="message-card">
+                                <div className="message-header">
+                                    <div className="sender-info">
+                                        <div className="sender-avatar" style={{
+                                            width: '48px',
+                                            height: '48px',
+                                            borderRadius: '50%',
+                                            backgroundColor: '#e0e0e0',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: '#666',
+                                            fontSize: '18px',
+                                            fontWeight: 'bold'
+                                        }}>
+                                            {query.name ? query.name.charAt(0).toUpperCase() : '?'}
                                         </div>
-                                        <button className="download-btn"><DownloadIcon /></button>
-                                    </div>
-                                    <div className="attachment-item">
-                                        <div className="file-icon zip">ZIP</div>
-                                        <div className="file-info">
-                                            <span className="file-name">Portfolio_Assets.zip</span>
-                                            <span className="file-size">14.5 MB</span>
+                                        <div className="sender-details">
+                                            <h3 className="sender-name">{query.name}</h3>
+                                            <p className="sender-email">{query.email}</p>
                                         </div>
-                                        <button className="download-btn"><DownloadIcon /></button>
+                                    </div>
+                                    <span className="message-date">{formatDateTime(initialMessage.created_at)}</span>
+                                </div>
+
+                                <div className="message-content">
+                                    <h4 className="message-subject">Subject: {query.subject}</h4>
+                                    <div className="message-body">
+                                        <p>{query.message}</p>
                                     </div>
                                 </div>
+
+                                {initialMessage.attachments && initialMessage.attachments.length > 0 && (
+                                    <div className="attachments-section">
+                                        <h5 className="attachments-title"><PaperclipIcon /> Attachments ({initialMessage.attachments.length})</h5>
+                                        <div className="attachments-list">
+                                            {initialMessage.attachments.map((att, idx) => (
+                                                <div key={idx} className="attachment-item">
+                                                    <div className={`file-icon ${att.type.toLowerCase()}`}>{att.type}</div>
+                                                    <div className="file-info">
+                                                        <span className="file-name">{att.name}</span>
+                                                        <span className="file-size">File</span>
+                                                    </div>
+                                                    <button 
+                                                        className="download-btn"
+                                                        onClick={() => handleDownloadAttachment(att.path, att.name)}
+                                                    >
+                                                        <DownloadIcon />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </div>
+                        )}
 
                         {/* Activity History */}
                         <div className="activity-history-section">
                             <h3 className="section-title">Activity History</h3>
                             <div className="timeline">
-
-                                <div className="timeline-item">
-                                    <div className="timeline-icon blue-mail"><MailIcon /></div>
-                                    <div className="timeline-content">
-                                        <div className="timeline-header">
-                                            <span className="timeline-title">Query submitted by candidate</span>
-                                            <span className="timeline-time">July 15, 10:15 AM</span>
+                                {activity.map((act, idx) => (
+                                    <div key={idx} className="timeline-item">
+                                        <div className={`timeline-icon ${act.sender_type === 'CANDIDATE' ? 'blue-mail' : 'yellow-note'}`}>
+                                            {act.sender_type === 'CANDIDATE' ? <MailIcon /> : '📝'}
                                         </div>
-                                        <div className="timeline-body">
-                                            Candidate submitted a query regarding interview scheduling for the Senior UX Designer position.
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="timeline-item">
-                                    <div className="timeline-icon yellow-note">📝</div>
-                                    <div className="timeline-content">
-                                        <div className="timeline-header">
-                                            <span className="timeline-title">Recruiter replied</span>
-                                            <span className="timeline-time">July 15, 10:10 AM</span>
-                                        </div>
-                                        <div className="timeline-body">
-                                            The recruiter responded to the candidate with an update regarding their application.
+                                        <div className="timeline-content">
+                                            <div className="timeline-header">
+                                                <span className="timeline-title">{act.description}</span>
+                                                <span className="timeline-time">{formatDate(act.created_at)}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div className="timeline-item">
-                                    <div className="timeline-icon green-check">✓</div>
-                                    <div className="timeline-content">
-                                        <div className="timeline-header">
-                                            <span className="timeline-title">Candidate follow-up received</span>
-                                            <span className="timeline-time">July 15, 09:42 AM</span>
-                                        </div>
-                                        <div className="timeline-body">
-                                            A follow-up query was received from the candidate for further clarification.
-                                        </div>
-                                    </div>
-                                </div>
-
+                                ))}
+                                {activity.length === 0 && (
+                                    <div style={{ padding: '1rem', color: '#666' }}>No activity recorded</div>
+                                )}
                             </div>
                         </div>
-
                     </div>
 
                     {/* Right Column */}
                     <div className="detail-right-col">
-
                         {/* Reply Card */}
                         <div className="reply-card">
                             <div className="reply-tabs">
@@ -167,37 +359,70 @@ const HREmployeeQueryDetail = () => {
                                 </button>
                             </div>
 
-                            <div className="reply-body">
-                                <div className="reply-recipient-row">
-                                    <span className="recipient-label">REPLY TO Candidates</span>
-                                    <button className="expand-btn"><ExpandIcon /></button>
-                                </div>
-                                <div className="editor-toolbar">
-                                    <button className="tool-btn bold">B</button>
-                                    <button className="tool-btn italic">I</button>
-                                    <button className="tool-btn underline">U</button>
-                                    <button className="tool-btn list">☰</button>
-                                </div>
-                                <textarea
-                                    className="reply-textarea"
-                                    placeholder="Type your response here..."
-                                    rows="10"
-                                ></textarea>
+                            {activeTab === 'reply' ? (
+                                <div className="reply-body">
+                                    <div className="reply-recipient-row">
+                                        <span className="recipient-label">REPLY TO Candidates</span>
+                                        <button className="expand-btn"><ExpandIcon /></button>
+                                    </div>
+                                    <div className="editor-toolbar">
+                                        <button className="tool-btn bold">B</button>
+                                        <button className="tool-btn italic">I</button>
+                                        <button className="tool-btn underline">U</button>
+                                        <button className="tool-btn list">☰</button>
+                                    </div>
+                                    <textarea
+                                        className="reply-textarea"
+                                        placeholder="Type your response here..."
+                                        rows="10"
+                                        value={replyMessage}
+                                        onChange={(e) => setReplyMessage(e.target.value)}
+                                    ></textarea>
 
-                                <div className="reply-options">
-                                    <label className="checkbox-option">
-                                        Send Via email
-                                    </label>
-                                    <label className="checkbox-option">
-                                        Send Whatsapp
-                                    </label>
-                                </div>
+                                    <div className="reply-options">
+                                        <label className="checkbox-option">
+                                            <input
+                                                type="checkbox"
+                                                checked={sendViaEmail}
+                                                onChange={(e) => setSendViaEmail(e.target.checked)}
+                                            />
+                                            Send Via email
+                                        </label>
+                                        <label className="checkbox-option">
+                                            <input
+                                                type="checkbox"
+                                                checked={sendWhatsapp}
+                                                onChange={(e) => setSendWhatsapp(e.target.checked)}
+                                            />
+                                            Send Whatsapp
+                                        </label>
+                                    </div>
 
-                                <div className="reply-actions">
-                                    <button className="btn-draft">Save Draft</button>
-                                    <button className="btn-send">Send Reply <SendIcon /></button>
+                                    <div className="reply-actions">
+                                        <button className="btn-draft">Save Draft</button>
+                                        <button className="btn-send" onClick={handleSendReply}>
+                                            Send Reply <SendIcon />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="reply-body">
+                                    <div className="note-input-wrapper">
+                                        <textarea
+                                            className="note-textarea"
+                                            placeholder="Add a quick note..."
+                                            rows="8"
+                                            value={noteText}
+                                            onChange={(e) => setNoteText(e.target.value)}
+                                        ></textarea>
+                                    </div>
+                                    <div className="reply-actions">
+                                        <button className="btn-send" onClick={handleAddNote}>
+                                            Add Note
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Recruiter Note */}
@@ -208,7 +433,18 @@ const HREmployeeQueryDetail = () => {
                             </div>
                             <div className="note-input-wrapper">
                                 <span className="globe-icon">🌐</span>
-                                <input type="text" placeholder="Add a quick note..." className="note-input" />
+                                <input
+                                    type="text"
+                                    placeholder="Add a quick note..."
+                                    className="note-input"
+                                    value={noteText}
+                                    onChange={(e) => setNoteText(e.target.value)}
+                                    onKeyPress={(e) => {
+                                        if (e.key === 'Enter') {
+                                            handleAddNote();
+                                        }
+                                    }}
+                                />
                             </div>
                         </div>
 
@@ -216,7 +452,7 @@ const HREmployeeQueryDetail = () => {
                         <div className="quick-actions-card">
                             <h4 className="qa-title">Quick Actions</h4>
                             <div className="qa-list">
-                                <button className="qa-btn">
+                                <button className="qa-btn" onClick={handleAssignQuery}>
                                     <UserPlusIcon /> Assign to Recruiter
                                 </button>
                                 <button className="qa-btn">
@@ -224,7 +460,6 @@ const HREmployeeQueryDetail = () => {
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

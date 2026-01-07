@@ -1,10 +1,75 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import HRHeader from './HRHeader';
 import { useNavigate, NavLink } from 'react-router-dom';
 import './HRProfile.css';
+import { fetchProfile, updateProfile } from '../../services/api';
 
 const HRProfile = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [profile, setProfile] = useState({
+        first_name: '',
+        last_name: '',
+        job_title: '',
+        department: '',
+        work_email: '',
+        phone_number: '',
+        employee_id: '',
+        location: '',
+        linkedin_url: ''
+    });
+
+    useEffect(() => {
+        loadProfile();
+    }, []);
+
+    const loadProfile = async () => {
+        try {
+            setLoading(true);
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || user.user_id || 1;
+            const response = await fetchProfile(userId);
+            const data = response.data;
+            
+            setProfile({
+                first_name: data.first_name || '',
+                last_name: data.last_name || '',
+                job_title: data.job_title || '',
+                department: data.department || '',
+                work_email: data.work_email || data.personal_email || '',
+                phone_number: data.phone_number || '',
+                employee_id: data.employee_id || '',
+                location: data.location || '',
+                linkedin_url: data.linkedin_url || ''
+            });
+        } catch (error) {
+            console.error('Error loading profile:', error);
+            alert('Failed to load profile');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSave = async () => {
+        try {
+            setSaving(true);
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || user.user_id || 1;
+            await updateProfile(userId, profile);
+            alert('Profile updated successfully!');
+            loadProfile();
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            alert('Failed to update profile');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleChange = (field, value) => {
+        setProfile(prev => ({ ...prev, [field]: value }));
+    };
 
     // Icons
     const MailIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>;
@@ -35,8 +100,8 @@ const HRProfile = () => {
                                     className="profile-avatar"
                                 />
                             </div>
-                            <h2 className="profile-name">Sarah Jenkins</h2>
-                            <p className="profile-role">Senior HR Manager</p>
+                            <h2 className="profile-name">{profile.first_name} {profile.last_name}</h2>
+                            <p className="profile-role">{profile.job_title || 'HR Manager'}</p>
                         </div>
 
                         <div className="profile-divider"></div>
@@ -44,23 +109,23 @@ const HRProfile = () => {
                         <div className="contact-info-list">
                             <div className="contact-item">
                                 <span className="contact-icon"><MailIcon /></span>
-                                <span className="contact-text">sarah.j@example.com</span>
+                                <span className="contact-text">{profile.work_email || 'N/A'}</span>
                             </div>
                             <div className="contact-item">
                                 <span className="contact-icon"><PhoneIcon /></span>
-                                <span className="contact-text">(555) 123-4567</span>
+                                <span className="contact-text">{profile.phone_number || 'N/A'}</span>
                             </div>
                             <div className="contact-item">
                                 <span className="contact-icon"><LinkIcon /></span>
-                                <span className="contact-text">linkedin.com/in/sarahj</span>
+                                <span className="contact-text">{profile.linkedin_url || 'N/A'}</span>
                             </div>
                             <div className="contact-item">
                                 <span className="contact-icon"><IdCardIcon /></span>
-                                <span className="contact-text">ID: 482910</span>
+                                <span className="contact-text">ID: {profile.employee_id || 'N/A'}</span>
                             </div>
                             <div className="contact-item">
                                 <span className="contact-icon"><MapPinIcon /></span>
-                                <span className="contact-text">New York, USA</span>
+                                <span className="contact-text">{profile.location || 'N/A'}</span>
                             </div>
                         </div>
                     </div>
@@ -91,42 +156,91 @@ const HRProfile = () => {
                                     <button className="edit-link">Edit Info</button>
                                 </div>
 
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>First Name:</label>
-                                        <input type="text" defaultValue="Sarah" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Last Name:</label>
-                                        <input type="text" defaultValue="Jenkins" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Job Title:</label>
-                                        <input type="text" defaultValue="Senior HR Manager" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Department:</label>
-                                        <input type="text" defaultValue="Human Resources" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Work Email:</label>
-                                        <div className="input-with-icon">
-                                            <span className="input-icon">✉️</span>
-                                            <input type="email" defaultValue="sarah.jenkins@hrportal.com" />
+                                {loading ? (
+                                    <div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>
+                                ) : (
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label>First Name:</label>
+                                            <input 
+                                                type="text" 
+                                                value={profile.first_name}
+                                                onChange={(e) => handleChange('first_name', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Last Name:</label>
+                                            <input 
+                                                type="text" 
+                                                value={profile.last_name}
+                                                onChange={(e) => handleChange('last_name', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Job Title:</label>
+                                            <input 
+                                                type="text" 
+                                                value={profile.job_title}
+                                                onChange={(e) => handleChange('job_title', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Department:</label>
+                                            <input 
+                                                type="text" 
+                                                value={profile.department}
+                                                onChange={(e) => handleChange('department', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Work Email:</label>
+                                            <div className="input-with-icon">
+                                                <span className="input-icon">✉️</span>
+                                                <input 
+                                                    type="email" 
+                                                    value={profile.work_email}
+                                                    onChange={(e) => handleChange('work_email', e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Phone Number:</label>
+                                            <div className="input-with-icon">
+                                                <span className="input-icon">📞</span>
+                                                <input 
+                                                    type="tel" 
+                                                    value={profile.phone_number}
+                                                    onChange={(e) => handleChange('phone_number', e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Location:</label>
+                                            <input 
+                                                type="text" 
+                                                value={profile.location}
+                                                onChange={(e) => handleChange('location', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>LinkedIn URL:</label>
+                                            <input 
+                                                type="text" 
+                                                value={profile.linkedin_url}
+                                                onChange={(e) => handleChange('linkedin_url', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="form-group full-width">
+                                            <label>Employee ID:</label>
+                                            <input 
+                                                type="text" 
+                                                value={profile.employee_id} 
+                                                className="bg-light" 
+                                                readOnly
+                                            />
                                         </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label>Phone Number:</label>
-                                        <div className="input-with-icon">
-                                            <span className="input-icon">📞</span>
-                                            <input type="tel" defaultValue="+1 (555) 012-3456" />
-                                        </div>
-                                    </div>
-                                    <div className="form-group full-width">
-                                        <label>Employee ID:</label>
-                                        <input type="text" defaultValue="482910" className="bg-light" />
-                                    </div>
-                                </div>
+                                )}
                             </div>
 
                         </div>
@@ -134,7 +248,9 @@ const HRProfile = () => {
                         {/* Footer Actions */}
                         <div className="profile-footer">
                             <button className="btn-cancel" onClick={() => navigate(-1)}>Cancel</button>
-                            <button className="btn-save">Save Changes</button>
+                            <button className="btn-save" onClick={handleSave} disabled={saving || loading}>
+                                {saving ? 'Saving...' : 'Save Changes'}
+                            </button>
                         </div>
                     </div>
                 </div>

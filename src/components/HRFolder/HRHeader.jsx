@@ -51,7 +51,7 @@ const HRHeader = () => {
 
             <div className="header-actions">
                 <button className="header-icon-btn"><SettingsIcon /></button>
-                <button className="header-icon-btn"><BellIcon /></button>
+                <button className="header-icon-btn" onClick={() => navigate('/hr-notifications')}><BellIcon /></button>
                 <div className="user-profile" onClick={() => navigate('/hr-profile')} title="View Profile">
                     <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=100&auto=format&fit=crop" alt="Profile" />
                 </div>

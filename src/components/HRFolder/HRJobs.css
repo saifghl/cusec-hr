@@ -9,8 +9,13 @@
 
 .hr-jobs-content {
     padding: 30px 40px;
-    max-width: 1400px;
-    margin: 0 auto;
+    max-width: 100%;
+    /* Use full width or Keep 1400px but aligned left? User said "start with left side". 
+                        Usually full width is better for "left aligned" dashboards to avoid empty right space 
+                        unless it's a specific container style. 
+                        Let's set max-width to 100% to fill the screen or just remove margin auto. 
+                        Safe bet: margin: 0 and max-width: 1400px (or 100%) */
+    margin: 0;
     width: 100%;
     box-sizing: border-box;
     flex: 1;
