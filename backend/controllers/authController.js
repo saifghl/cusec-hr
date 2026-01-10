@@ -1,100 +1,100 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const pool = require('../config/db');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const pool = require("../config/db");
 
-const register = async (req, res) => {
-  console.log("Register function is running");
-  console.log("hello");
-    const { email, password,full_name} = req.body;
-    
-    try {
-        // Check if user exists
-        const [existingUser] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
-        if (existingUser.length > 0) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
+/* =========================
+   REGISTER USER
+========================= */
+exports.register = async (req, res) => {
+  try {
+    const { full_name, email, password } = req.body;
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create user
-        const [userResult] = await pool.execute(
-            'INSERT INTO users (full_name,email, password, role) VALUES (?,?, ?, ?)',
-            [full_name,email, hashedPassword,"user"]
-        );
-
-
-        res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!full_name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
     }
+
+    // Check if user already exists
+    const [existingUser] = await pool.execute(
+      "SELECT id FROM users WHERE email = ?",
+      [email]
+    );
+
+    if (existingUser.length > 0) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert user
+    await pool.execute(
+      "INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)",
+      [full_name, email, hashedPassword, "user"]
+    );
+
+    res.status(201).json({ message: "User registered successfully" });
+
+  } catch (error) {
+    console.error("Register Error:", error);
+    res.status(500).json({ message: "Server error during registration" });
+  }
 };
 
-
-const login = async (req, res) => {
-  console.log("Login fucntion is running");
-  const { email, password} = req.body;
-  console.log(req.body);
+/* =========================
+   LOGIN USER
+========================= */
+exports.login = async (req, res) => {
   try {
-    // 1. Get user by email
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    // Get user
     const [users] = await pool.execute(
-      'SELECT * FROM users WHERE email = ?',
+      "SELECT * FROM users WHERE email = ?",
       [email]
     );
 
     if (users.length === 0) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    //user variable store user data
     const user = users[0];
 
-    // 3. Password check
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+    // Compare password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // 4. Generate JWT
+    // Generate JWT token
     const token = jwt.sign(
-
-      { 
-        user_id: user.user_id || user.id, 
-        email: user.email, 
-        full_name: user.full_name || user.name,
-        work_email: user.work_email || user.email,
-        role: user.role 
+      {
+        id: user.id,
+        email: user.email,
+        full_name: user.full_name,
+        role: user.role
       },
-
-      { userId: user.id, email: user.email,name:user.name, role: user.role },
-
-      process.env.JWT_SECRET,
-      { expiresIn: '24h' }
+      process.env.JWT_SECRET || "default_secret_key",
+      { expiresIn: "24h" }
     );
 
-    // 5. Send response
-
+    // Response
     res.json({
       token,
       user: {
-
-        user_id: user.user_id || user.id,
-        email: user.email,
-        role: user.role,
-        full_name: user.full_name || user.name
-
         id: user.id,
         email: user.email,
-        role: user.role,
-        name:user.name
-
+        full_name: user.full_name,
+        role: user.role
       }
     });
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Login Error:", error);
+    res.status(500).json({ message: "Server error during login" });
   }
 };
-
-
-module.exports = { login,register };
