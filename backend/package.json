@@ -1,5 +1,5 @@
 {
-<<<<<<< HEAD
+
   "name": "backend",
   "version": "1.0.0",
   "description": "",
@@ -22,8 +22,8 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.16.0"
-=======
-  "name": "al-burhan-backend",
+
+  "name": "cusec-hr backend",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -41,6 +41,6 @@
     "multer": "^2.0.2",
     "mysql2": "^3.1.0",
     "sequelize": "^6.32.1"
->>>>>>> ab1ca82485e1b8ef397328128ced844cc70c2f76
+
   }
 }
