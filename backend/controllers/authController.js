@@ -57,7 +57,7 @@ const login = async (req, res) => {
 
     // 4. Generate JWT
     const token = jwt.sign(
-<<<<<<< HEAD
+
       { 
         user_id: user.user_id || user.id, 
         email: user.email, 
@@ -65,32 +65,32 @@ const login = async (req, res) => {
         work_email: user.work_email || user.email,
         role: user.role 
       },
-=======
+
       { userId: user.id, email: user.email,name:user.name, role: user.role },
->>>>>>> ab1ca82485e1b8ef397328128ced844cc70c2f76
+
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
     // 5. Send response
-<<<<<<< HEAD
+
     res.json({
-=======
+
    res.json({
->>>>>>> c66cf8cff78d2b033112bc992bac8706bb0fc174
+
       token,
       user: {
-<<<<<<< HEAD
+
         user_id: user.user_id || user.id,
         email: user.email,
         role: user.role,
         full_name: user.full_name || user.name
-=======
+
         id: user.id,
         email: user.email,
         role: user.role,
         name:user.name
->>>>>>> ab1ca82485e1b8ef397328128ced844cc70c2f76
+
       }
     });
 
