@@ -1,46 +1,23 @@
 {
-
-  "name": "backend",
+  "name": "cusec-hr-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend API for CUSEC HR system",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "commonjs",
-  "dependencies": {
-    "bcrypt": "^6.0.0",
-    "bcryptjs": "^3.0.3",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "express-validator": "^7.3.1",
-    "jsonwebtoken": "^9.0.3",
-    "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.16.0"
-
-  "name": "cusec-hr backend",
-  "version": "1.0.0",
-  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "axios": "^1.13.2",
-    "bcrypt": "^5.1.1",
-    "bcryptjs": "^3.0.3",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
-    "express": "^4.22.1",
-    "jsonwebtoken": "^9.0.1",
-    "multer": "^2.0.2",
-    "mysql2": "^3.1.0",
-    "sequelize": "^6.32.1"
-
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.16.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
