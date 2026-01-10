@@ -75,9 +75,6 @@ const login = async (req, res) => {
     // 5. Send response
 
     res.json({
-
-   res.json({
-
       token,
       user: {
 
